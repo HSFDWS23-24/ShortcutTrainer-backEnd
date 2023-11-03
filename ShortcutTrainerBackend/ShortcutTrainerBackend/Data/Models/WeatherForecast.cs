@@ -1,4 +1,4 @@
-namespace ShortcutTrainerBackend;
+namespace ShortcutTrainerBackend.Data.Models;
 
 public class WeatherForecast
 {

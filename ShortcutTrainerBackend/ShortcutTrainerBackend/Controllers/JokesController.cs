@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 
 namespace ShortcutTrainerBackend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class JokesController : ControllerBase
 {
     public JokesController(ILogger<JokesController> logger, IJokeService jokeService)

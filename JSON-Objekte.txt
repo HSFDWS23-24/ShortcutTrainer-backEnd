@@ -1,0 +1,118 @@
+{
+    "landingPageCourses": {
+      "username" : "",
+      "courses": [{
+        "id": 1,
+        "name": "",
+        "progress": ""
+      }]
+    },
+    "coursePage": {
+        "username" : "",
+        "course": {
+          "id": 1,
+          "name": "",
+          "description": "",
+          "progress": "",
+          "favourite": false
+        }
+      },
+      "testPage": {
+        "username" : "",
+        "curse_id" : 1,
+        "curse_name": "",
+        "questions" : [{
+            "question_id": 1,
+            "question": "",
+            "hint" : "",
+            "answer": "",
+            "favourite": false
+        }]
+      }
+  }
+
+  
+Wie bzw. wann wird ein Kurs belegt, weil favorite kann nicht gesetzt werden ohne 
+eintrag in Users Courses?
+___________________________
+
+
+
+
+Json Objekt "landingPageCourses"
+enthält: 
+"username" Benutzername falls vorhanden sonst leer
+Liste von Objekten "courses"
+courses enthält: id, name, progress
+
+progress den fortschritt des Kurses falls user nicht angemeldt oder Kurs nicht belegt leer
+sonst prozent in String von 0.00 - 100.00
+Berechnung des Fortschritts im Backend möglich mit 
+useres_courses_questions und dem username /user_id falls vorhanden
+
+Nutzen FE & BE:
+Verwendung anzeigen von Kursen evtl. username auf landingpage
+Abhängig von Anfrage können 
+alle Kurse oder 
+nur Kurse der Kategory xy oder 
+Kurse des Benutzers xy
+
+_____________________________
+
+Json Objekt coursePage verwendung der Kurs Seite enthält detailierte Infos zu dem 
+jewiligen Kurs
+
+"coursePage" json Objekt
+enthält: 
+"username"
+"course" Objekt genau ein Kurs wird auf dieser Seite angezeigt
+course enthält:
+
+id
+name 
+description
+progess (falls vorhanden im Backend berechnet)
+favourite"
+
+Je nach dem Auf welchem Kurs geklickt wurde kommt in diesem Objekt die Notwendigen 
+Infos zu dem Objekt auf welches geklickt wurde.
+
+_____________________________
+
+
+Angenommen Timer und Versuche für Frage nicht in Datenbank gespeichert.
+
+Json Objekt "testPage" für Übung und Test im FE
+
+enthält: 
+"username"
+"course_id"
+Eine Liste von Fragen "questions" enthält alle Fragen die zum Kurs gehören
+
+Eine question enthält:
+"question_id"
+"question" (Die Frage selbst)
+"hint"
+"answer" (Die antwort zur jeweiligen Frage)
+"favourite" (Falls der Kurs vom User schon mal abgeschlossen wurde könnten Fragen als Favourite vorgemerkt sein)
+
+Die ids für Kurs und Frage und User (username einzigartig deshalb reicht als id)
+werden benötigt um einen Eintrag in die Datenbank zu machen 
+in die Tabelle users_courses_questions. Entrag bei mehren Versuchen wenn es Richtig ist egal 
+bei welchem Versuch (direkt eintrag und nächste Frage) oder
+falls der letzte Veruch Falsch ist eintrag in die Datenbank Falsch.
+
+
+___________________________________
+
+Von FE zu BE daten die gesendet werden müssten:
+
+bei Sign Up "username" in die Datenbank speichern
+bei Log in nix
+bei falls Kurse des Users angezeigt werden (landigpage) "username" benötigt
+falls ein Kurs vom User ausgewählt/anzeigen (course Seite) "username", "course_id", 
+falls User eine Frage beantwortet (question/test Seite) "username", "question_id", "course_id", "correctly"
+
+Bei Favourtite egal ob Kurs oder Frage wird auch von FE zu Backend einmal mit question_id einmal ohne
+
+

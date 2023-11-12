@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
 builder.Services.AddScoped<IJokeService, JokeService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 
 builder.Services.AddControllers();

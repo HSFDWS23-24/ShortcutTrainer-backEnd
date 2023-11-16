@@ -15,7 +15,6 @@ namespace ShortcutTrainerBackend.Controllers
         {
             _logger = logger;
             _coursesService = coursesService;
-
         }
 
         [HttpPost("course")]

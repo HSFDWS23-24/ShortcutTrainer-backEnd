@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
 builder.Services.AddScoped<IJokeService, JokeService>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+//builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 // ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
@@ -32,6 +33,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+/*
+ if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name V1");
+    });
+}*/
 
 app.UseHttpsRedirection();
 

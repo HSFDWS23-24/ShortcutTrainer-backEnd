@@ -5,7 +5,7 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
 {
     public class MockQuestionDatabase : IMockDatabase<Question>
     {
-        public List<Question> DataStore { get; } = new List<Question>
+        public List<Question> DataStore { get; set; } = new List<Question>
         {
             new()
             {
@@ -44,7 +44,7 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                 Shortcut = "Strg+R"
             }
         };
-
+        /*
         public async Task<IEnumerable<Question>> GetDataAsync()
         {
             return await Task.FromResult(DataStore.AsEnumerable());
@@ -54,6 +54,17 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
         {
             DataStore.AddRange(data);
             await Task.CompletedTask;
+        }*/
+
+        public Task<IEnumerable<Question>> GetDataAsync()
+        {
+            return Task.FromResult<IEnumerable<Question>>(DataStore);
+        }
+
+        public Task SetDataAsync(IEnumerable<Question> data)
+        {
+            DataStore.AddRange(data);
+            return Task.CompletedTask;
         }
     }
 }

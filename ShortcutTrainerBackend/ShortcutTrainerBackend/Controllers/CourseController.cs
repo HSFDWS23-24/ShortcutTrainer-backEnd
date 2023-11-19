@@ -9,7 +9,7 @@ namespace ShortcutTrainerBackend.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseService _coursesService;
-        public readonly ILogger<CourseController> _logger;
+        private readonly ILogger<CourseController> _logger;
 
         public CourseController(ILogger<CourseController> logger, ICourseService coursesService)
         {

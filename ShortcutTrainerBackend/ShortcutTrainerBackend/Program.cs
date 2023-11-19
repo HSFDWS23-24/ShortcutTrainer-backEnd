@@ -15,6 +15,8 @@ builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
 builder.Services.AddScoped<IJokeService, JokeService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+
 
 // ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();

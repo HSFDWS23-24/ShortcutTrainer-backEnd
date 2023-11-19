@@ -1,10 +1,10 @@
 namespace ShortcutTrainerBackend.Data.Models;
 
-public class Course
-{
+    public class Course
+    {
     public required int Id { get; set; }
     public required string Title { get; set; }
-    public required string Description { get; set; }
+        public required string Description { get; set; }
     public required string ImageUrl { get; set; }
     public required string PaymentType { get; set; }
     public required Category Category { get; set; } // ToDo: FK on Categories(Id)

@@ -7,13 +7,15 @@ namespace ShortcutTrainerBackend.Services;
 
 public class QuestionService : IQuestionService
 {
-    private readonly MockQuestionDatabase _database;
 
-
-    public QuestionService(MockQuestionDatabase database)
+    public QuestionService(IMockDatabase<Question> database)
     {
         _database = database;
     }
+
+    //private readonly MockQuestionDatabase _database;
+    private readonly IMockDatabase<Question> _database;
+
 
     public async Task<List<Question>> GetAllQuestionsAsync()
     {

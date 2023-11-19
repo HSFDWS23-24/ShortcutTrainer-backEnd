@@ -12,13 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
-builder.Services.AddScoped<IJokeService, JokeService>();
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-//builder.Services.AddScoped<IQuestionService, QuestionService>();
-
-// ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
 builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
+
+
+
+// ToDo: registration of required mock databases; can now be used for DI in services
+builder.Services.AddScoped<IJokeService, JokeService>();
+builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

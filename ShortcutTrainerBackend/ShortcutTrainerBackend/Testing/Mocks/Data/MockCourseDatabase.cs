@@ -31,6 +31,17 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                     Category = new Category { Id = 2, Name = "Weitere Kategorie" },
                     Progress = 0,
                     Questions = questions.Skip(3).Take(3).ToList()
+                },
+                new()
+                {
+                    Id = 3,
+                    Title = "Beispielkurs 3",
+                    Description = "Beschreibung des Beispielkurses 3",
+                    ImageUrl = "url_zum_bild_3",
+                    PaymentType = "Kostenlos",
+                    Category =  new Category { Id = 2, Name = "Weitere Kategorie" },
+                    Progress = 0,
+                    Questions = questions.Skip(3).Take(3).ToList()
                 }
             };
         }

@@ -14,9 +14,52 @@ namespace ShortcutTrainerBackend.Services
 
         public async Task<IEnumerable<Course>> GetCoursesAsync(CourseParameter request)
         {
-            // The request contains parameters to filter the desired courses
+            var courses = await _mockDatabase.GetDataAsync();
 
-            return await _mockDatabase.GetDataAsync(); ;
+            var filteredCourses = courses.Select(c => new Course
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+                ImageUrl = c.ImageUrl,
+                PaymentType = c.PaymentType,
+                Category = c.Category,
+                Progress = c.Progress
+            });
+
+
+            if (!string.IsNullOrEmpty(request.Category))
+            {
+                filteredCourses = filteredCourses.Where(c => c.Category.Name == request.Category);
+            }
+
+            if (!string.IsNullOrEmpty(request.SearchString))
+            {
+                filteredCourses = filteredCourses.Where(c =>
+                    c.Title.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase) ||
+                    c.Description.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            if (request.Limit.HasValue)
+            {
+                filteredCourses = filteredCourses.Take(request.Limit.Value);
+            }
+
+
+            if (request.UserID == 0)
+            {
+                //Default-Implementation for UserId == 0
+
+                return filteredCourses;
+            }
+
+            if (request.UserID == null)
+            {
+                filteredCourses = filteredCourses.Where(c => c.PaymentType == "Kostenlos");
+            }
+
+            return filteredCourses;
 
         }
     }

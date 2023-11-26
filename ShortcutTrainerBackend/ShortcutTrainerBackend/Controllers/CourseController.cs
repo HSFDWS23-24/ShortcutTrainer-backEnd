@@ -21,8 +21,7 @@ namespace ShortcutTrainerBackend.Controllers
         [HttpGet("courses")]
         public async Task<IActionResult> CoursesAsync([FromQuery] CourseParameter request)
         {
-            var courses = await _coursesService.GetCoursesAsync(request);
-            return Ok(courses);
+            return Ok(await _coursesService.GetCoursesAsync(request));
         }
 
     }

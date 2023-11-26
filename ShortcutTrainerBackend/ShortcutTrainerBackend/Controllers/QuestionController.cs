@@ -18,7 +18,7 @@ namespace ShortcutTrainerBackend.Controllers
 
         }
 
-        [HttpGet("question")]
+        [HttpGet(Name = nameof(QuestionAsync))]
         public async Task<IActionResult> QuestionAsync([FromQuery] QuestionParameter request)
         {
             var questions = await _questionService.GetQuestionsAsync(request);

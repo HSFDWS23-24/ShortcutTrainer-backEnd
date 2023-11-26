@@ -21,10 +21,8 @@ namespace ShortcutTrainerBackend.Services
             {
                 return await Task.FromResult(course.Questions.AsEnumerable());
             }
-            else
-            {
-                return await Task.FromResult(Enumerable.Empty<Question>());
-            }
+            return await Task.FromResult(Enumerable.Empty<Question>());
+           
         }
     }
 }

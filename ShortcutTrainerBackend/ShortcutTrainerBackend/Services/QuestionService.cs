@@ -1,6 +1,5 @@
 ﻿using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
-using ShortcutTrainerBackend.Testing.Mocks.Data;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 namespace ShortcutTrainerBackend.Services
@@ -22,7 +21,6 @@ namespace ShortcutTrainerBackend.Services
                 return await Task.FromResult(course.Questions.AsEnumerable());
             }
             return await Task.FromResult(Enumerable.Empty<Question>());
-           
         }
     }
 }

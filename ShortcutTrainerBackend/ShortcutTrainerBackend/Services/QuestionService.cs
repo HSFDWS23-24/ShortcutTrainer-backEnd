@@ -18,7 +18,8 @@ namespace ShortcutTrainerBackend.Services
 
             if (course != null)
             {
-                return await Task.FromResult(course.Questions.AsEnumerable());
+                // return await Task.FromResult(course.Questions.AsEnumerable());
+                return await Task.FromResult(new List<Question>());
             }
             return await Task.FromResult(Enumerable.Empty<Question>());
         }

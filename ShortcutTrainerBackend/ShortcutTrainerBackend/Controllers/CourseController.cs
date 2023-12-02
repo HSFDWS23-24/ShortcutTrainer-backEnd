@@ -9,7 +9,7 @@ namespace ShortcutTrainerBackend.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseService _coursesService;
-        public readonly ILogger<CourseController> _logger;
+        private readonly ILogger<CourseController> _logger;
 
         public CourseController(ILogger<CourseController> logger, ICourseService coursesService)
         {
@@ -18,8 +18,8 @@ namespace ShortcutTrainerBackend.Controllers
 
         }
 
-        [HttpGet("courses")]
-        public async Task<IActionResult> CoursesAsync([FromQuery] CourseParameter request)
+        [HttpGet(Name = nameof(GetCourses))]
+        public async Task<IActionResult> GetCourses([FromQuery] CourseParameter request)
         {
             return Ok(await _coursesService.GetCoursesAsync(request));
         }

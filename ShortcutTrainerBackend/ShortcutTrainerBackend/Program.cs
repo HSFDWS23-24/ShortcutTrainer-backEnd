@@ -1,3 +1,5 @@
+using DevExpress.Xpo;
+using DevExpress.Xpo.DB;
 using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services;
 using ShortcutTrainerBackend.Services.Interfaces;
@@ -10,15 +12,17 @@ using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ToDo: Connect to database
+// ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
+builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
+builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
+
+// Add services to the container.
 builder.Services.AddScoped<IJokeService, JokeService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-
-// ToDo: registration of required mock databases; can now be used for DI in services
-builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
-builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

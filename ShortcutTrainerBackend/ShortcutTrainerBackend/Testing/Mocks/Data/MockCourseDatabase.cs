@@ -7,43 +7,32 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
     {
         public MockCourseDatabase(IMockDatabase<Question> questionDatabase)
         {
-            var questions = questionDatabase.GetDataAsync().Result.ToList();
-            DataStore = new List<Course>
-            {
-                new()
-                {
-                    Id = 1,
-                    Title = "Beispielkurs 1",
-                    Description = "Beschreibung des Beispielkurses 1",
-                    ImageUrl = "url_zum_bild_1",
-                    PaymentType = "Kostenlos",
-                    Category = new Category { Id = 1, Name = "Beispielkategorie" },
-                    Progress = 0,
-                    Questions = questions.Take(3).ToList()
-                },
-                new()
-                {
-                    Id = 2,
-                    Title = "Beispielkurs 2",
-                    Description = "Beschreibung des Beispielkurses 2",
-                    ImageUrl = "url_zum_bild_2",
-                    PaymentType = "Premium",
-                    Category = new Category { Id = 2, Name = "Weitere Kategorie" },
-                    Progress = 0,
-                    Questions = questions.Skip(3).Take(3).ToList()
-                },
-                new()
-                {
-                    Id = 3,
-                    Title = "Beispielkurs 3",
-                    Description = "Beschreibung des Beispielkurses 3",
-                    ImageUrl = "url_zum_bild_3",
-                    PaymentType = "Kostenlos",
-                    Category =  new Category { Id = 2, Name = "Weitere Kategorie" },
-                    Progress = 0,
-                    Questions = questions.Skip(3).Take(3).ToList()
-                }
-            };
+            // var questions = questionDatabase.GetDataAsync().Result.ToList();
+            // DataStore = new List<Course>
+            // {
+            //     new()
+            //     {
+            //         Id = 1,
+            //         Title = "Beispielkurs 1",
+            //         Description = "Beschreibung des Beispielkurses 1",
+            //         ImageUrl = "url_zum_bild_1",
+            //         PaymentType = "Kostenlos",
+            //         Category = new Category { Id = 1, Name = "Beispielkategorie" },
+            //         Progress = 0,
+            //         Questions = questions.Take(3).ToList()
+            //     },
+            //     new()
+            //     {
+            //         Id = 2,
+            //         Title = "Beispielkurs 2",
+            //         Description = "Beschreibung des Beispielkurses 2",
+            //         ImageUrl = "url_zum_bild_2",
+            //         PaymentType = "Premium",
+            //         Category = new Category { Id = 2, Name = "Weitere Kategorie" },
+            //         Progress = 0,
+            //         Questions = questions.Skip(3).Take(3).ToList()
+            //     }
+            // };
         }
 
         public List<Course> DataStore { get; }

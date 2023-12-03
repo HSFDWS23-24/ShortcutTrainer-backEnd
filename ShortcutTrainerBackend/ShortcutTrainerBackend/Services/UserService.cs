@@ -14,13 +14,27 @@ namespace ShortcutTrainerBackend.Services
 
         public async Task<IEnumerable<User>> GetUsersAsync(UserParameter request)
         {
+            var userList = _mockDatabase.DataStore;
+
+            if (userList != null)
+            {
+                return await Task.FromResult(_mockDatabase.DataStore);
+            }
+            return await Task.FromResult(Enumerable.Empty<User>());
+        }
+
+        public async Task<User> GetUserAsync(UserParameter request)
+        {
             var user = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.UserID);
 
             if (user != null)
             {
-                return await Task.FromResult(new List<User>());
+                //var userList = new List<User>();
+                //userList.Add(user);
+
+                return await Task.FromResult(user);
             }
-            return await Task.FromResult(Enumerable.Empty<User>());
+            return await Task.FromResult(new User());
         }
 
         public async Task<User> AddUserAsync(User newUser)
@@ -67,7 +81,7 @@ namespace ShortcutTrainerBackend.Services
             existingUser.Name = updatedUser.Name;
             existingUser.Email = updatedUser.Email;
             existingUser.PreferedLanguage = updatedUser.PreferedLanguage;
-            existingUser.PreferedLayout = updatedUser.PreferedLayout;
+            existingUser.PreferedKeyboardLayout = updatedUser.PreferedKeyboardLayout;
             existingUser.PreferedOperatingSystem = updatedUser.PreferedOperatingSystem;
             // Add other properties as needed
 

@@ -25,6 +25,13 @@ namespace ShortcutTrainerBackend.Controllers
             return Ok(users);
         }
 
+        //[HttpGet(Name = nameof(GetUser))]
+        //public async Task<IActionResult> GetUser([FromQuery] UserParameter request)
+        //{
+        //    var user = await _userService.GetUserAsync(request);
+        //    return Ok(user);
+        //}
+
         [HttpPost(Name = nameof(AddUser))]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
@@ -37,7 +44,7 @@ namespace ShortcutTrainerBackend.Controllers
 
                 var addedUser = await _userService.AddUserAsync(user);
 
-                return CreatedAtAction(nameof(AddUser), new { id = addedUser.Id }, addedUser);
+                return Ok(addedUser);
             }
             catch (Exception ex)
             {
@@ -46,25 +53,25 @@ namespace ShortcutTrainerBackend.Controllers
             }
         }
 
-        [HttpPost(Name = nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser([FromBody] User user)
-        {
-            try
-            {
-                if (user == null)
-                {
-                    return BadRequest("User data is invalid.");
-                }
+        //[HttpPost(Name = nameof(UpdateUser))]
+        //public async Task<IActionResult> UpdateUser([FromBody] User user)
+        //{
+        //    try
+        //    {
+        //        if (user == null)
+        //        {
+        //            return BadRequest("User data is invalid.");
+        //        }
 
-                var updatedUser = await _userService.UpdateUserAsync(user);
+        //        var updatedUser = await _userService.UpdateUserAsync(user);
 
-                return CreatedAtAction(nameof(UpdateUser), new { id = updatedUser.Id }, updatedUser);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error adding user: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-            }
-        }
+        //        return Ok(updatedUser);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Error adding user: {ex.Message}");
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+        //    }
+        //}
     }
 }

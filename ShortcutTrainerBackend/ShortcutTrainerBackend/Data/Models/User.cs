@@ -12,7 +12,7 @@ public class User
 
     public string PreferedLanguage { get; set; }
 
-    public string PreferedLayout { get; set; }
+    public string PreferedKeyboardLayout { get; set; }
 
     public string PreferedOperatingSystem { get; set; }
 

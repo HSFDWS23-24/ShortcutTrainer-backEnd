@@ -13,8 +13,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Name = "User1",
                  Email = "harmonischsensibelerhamster@muell.xyz",
                  PreferedLanguage = "de-DE",
-                 PreferedLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10"
+                 PreferedKeyboardLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10",
+                 UserCourses = new List<UserCourse>()
              },
              new()
              {
@@ -22,8 +23,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Name = "User2",
                  Email = "anziehendzaghaftergorilla@oida.icu",
                  PreferedLanguage = "de-DE",
-                 PreferedLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10"
+                 PreferedKeyboardLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10",
+                 UserCourses = new List<UserCourse>()
              },
              new()
              {
@@ -31,8 +33,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Name = "User3",
                  Email = "charismatischliebenswerterfuchs@10minmail.de",
                  PreferedLanguage = "de-DE",
-                 PreferedLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10"
+                 PreferedKeyboardLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10",
+                 UserCourses = new List<UserCourse>()
              }
         };
 

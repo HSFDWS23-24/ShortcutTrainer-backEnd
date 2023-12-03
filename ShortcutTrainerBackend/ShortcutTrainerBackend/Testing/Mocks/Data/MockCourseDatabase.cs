@@ -14,45 +14,149 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                 {
                     Id = 1,
                     Title = "Beispielkurs 1",
-                    Language = "EN",
+                    Language = "en",
                     Description = "Beschreibung des Beispielkurses 1",
                     ImageUrl = "url_zum_bild_1",
                     Subscription = SubscriptionType.Free,
-                    Tags = { new CourseTag { Tag = "Tag1" }, new CourseTag { Tag = "Tag2" } },
-                    UserCourses = { new UserCourse { User = new User { Id = "1", Name = "UserName1", Email = "user1@example.com" }, Favorite = true } }
+                    Tags = new List<CourseTag>
+                    {
+                        new CourseTag
+                        {
+                            Tag = "Tag1"
+                        },
+                        new CourseTag
+                        {
+                            Tag = "Tag2"
+                        }
+                    },
+                    // UserCourses =
+                    // {
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
+                    //         },
+                    //         Favorite = true
+                    //     }
+                    // }
                 },
                 new Course
                 {
                     Id = 2,
                     Title = "Beispielkurs 2",
-                    Language = "DE",
+                    Language = "de",
                     Description = "Beschreibung des Beispielkurses 2",
                     ImageUrl = "url_zum_bild_2",
                     Subscription = SubscriptionType.Other,
-                    Tags = { new CourseTag { Tag = "Tag1" }, new CourseTag { Tag = "Tag4" } },
-                    UserCourses = { new UserCourse { User = new User { Id = "2", Name = "UserName2", Email = "user2@example.com" }, Favorite = false }, new UserCourse { User = new User { Id = "1", Name = "UserName1", Email = "user1@example.com" }, Favorite = true } }
+                    Tags = new List<CourseTag>
+                    {
+                        new CourseTag
+                        {
+                            Tag = "Tag1"
+                        },
+                        new CourseTag
+                        {
+                            Tag = "Tag4"
+                        }
+                    },
+                    // UserCourses =
+                    // {
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "2", Name = "UserName2", Email = "user2@example.com"
+                    //         },
+                    //         Favorite = false
+                    //     }, 
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
+                    //         },
+                    //         Favorite = true
+                    //     }
+                    // }
                 },
                 new Course
                 {
                     Id = 3,
                     Title = "Beispielkurs 3",
-                    Language = "DE",
+                    Language = "de",
                     Description = "Beschreibung des Beispielkurses 3",
                     ImageUrl = "url_zum_bild_3",
                     Subscription = SubscriptionType.Other,
-                    Tags = { new CourseTag { Tag = "Tag3" }, new CourseTag { Tag = "Tag5" } },
-                    UserCourses = { new UserCourse { User = new User { Id = "3", Name = "UserName3", Email = "user3@example.com" }, Favorite = true }, new UserCourse { User = new User { Id = "1", Name = "UserName1", Email = "user1@example.com" }, Favorite = true } }
+                    Tags = new List<CourseTag>
+                    {
+                        new CourseTag
+                        {
+                            Tag = "Tag3"
+                        },
+                        new CourseTag
+                        {
+                            Tag = "Tag5"
+                        }
+                    },
+                    // UserCourses =
+                    // {
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "3", Name = "UserName3", Email = "user3@example.com"
+                    //         },
+                    //         Favorite = true
+                    //     }, 
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
+                    //         }, 
+                    //         Favorite = true
+                    //     }
+                    // }
                 },
                 new Course
                 {
                     Id = 4,
                     Title = "Beispielkurs 4",
-                    Language = "FR",
+                    Language = "fr",
                     Description = "Beschreibung des Beispielkurses 4",
                     ImageUrl = "url_zum_bild_4",
                     Subscription = SubscriptionType.Free,
-                    Tags = { new CourseTag { Tag = "Tag2" }, new CourseTag { Tag = "Tag3" } },
-                    UserCourses = { new UserCourse { User = new User { Id = "4", Name = "UserName4", Email = "user4@example.com" }, Favorite = false }, new UserCourse { User = new User { Id = "3", Name = "UserName3", Email = "user3@example.com" }, Favorite = true } }
+                    Tags = new List<CourseTag>
+                    {
+                        new CourseTag
+                        {
+                            Tag = "Tag2"
+                        }, 
+                        new CourseTag
+                        {
+                            Tag = "Tag3"
+                        }
+                    },
+                    // UserCourses =
+                    // {
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "4", Name = "UserName4", Email = "user4@example.com"
+                    //         },
+                    //         Favorite = false
+                    //     }, 
+                    //     new UserCourse
+                    //     {
+                    //         User = new User
+                    //         {
+                    //             Id = "3", Name = "UserName3", Email = "user3@example.com"
+                    //         }, 
+                    //         Favorite = true
+                    //     }
+                    // }
                 }
              };
         }

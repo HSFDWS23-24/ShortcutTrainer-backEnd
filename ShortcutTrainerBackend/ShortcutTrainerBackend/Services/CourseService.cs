@@ -15,54 +15,9 @@ namespace ShortcutTrainerBackend.Services
 
         public async Task<IEnumerable<Course>> GetCoursesAsync(CourseParameter request)
         {
+            var language = request.Language ?? "de";
             var courses = await _mockDatabase.GetDataAsync();
-
-            var filteredCourses = courses.Select(c => new Course
-            {
-                Id = c.Id,
-                Title = c.Title,
-                Language = c.Language,
-                Description = c.Description,
-                ImageUrl = c.ImageUrl,
-                Subscription = c.Subscription,
-                Tags = new XPCollection<CourseTag>(c.Tags),
-                UserCourses = new XPCollection<UserCourse>(c.UserCourses)
-            });
-
-
-            //if (!string.IsNullOrEmpty(request.Category))
-            //{
-            //    filteredCourses = filteredCourses.Where(c => c.Category.Name == request.Category);
-            //}
-
-            //if (!string.IsNullOrEmpty(request.SearchString))
-            //{
-            //    filteredCourses = filteredCourses.Where(c =>
-            //        c.Title.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase) ||
-            //        c.Description.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase)
-            //    );
-            //}
-
-            //if (request.Limit.HasValue)
-            //{
-            //    filteredCourses = filteredCourses.Take(request.Limit.Value);
-            //}
-
-
-            //if (request.UserID == 0)
-            //{
-            //    //Default-Implementation for UserId == 0
-
-            //    return filteredCourses;
-            //}
-
-            //if (request.UserID == null)
-            //{
-            //    filteredCourses = filteredCourses.Where(c => c.PaymentType == "Kostenlos");
-            //}
-
-            return filteredCourses;
-
+            return courses.Where(c => c.Language == language);
         }
     }
 }

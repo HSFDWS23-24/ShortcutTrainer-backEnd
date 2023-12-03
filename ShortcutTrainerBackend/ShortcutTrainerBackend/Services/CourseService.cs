@@ -1,4 +1,5 @@
-﻿using ShortcutTrainerBackend.Data.Models;
+﻿using DevExpress.Xpo;
+using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
@@ -14,10 +15,9 @@ namespace ShortcutTrainerBackend.Services
 
         public async Task<IEnumerable<Course>> GetCoursesAsync(CourseParameter request)
         {
-            // The request contains parameters to filter the desired courses
-
-            return await _mockDatabase.GetDataAsync(); ;
-
+            var language = request.Language ?? "de";
+            var courses = await _mockDatabase.GetDataAsync();
+            return courses.Where(c => c.Language == language);
         }
     }
 }

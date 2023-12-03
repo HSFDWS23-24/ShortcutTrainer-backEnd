@@ -9,6 +9,12 @@ public class User
     public string Name { get; set; }
 
     public string Email { get; set; }
-    
+
+    public string PreferedLanguage { get; set; }
+
+    public string PreferedLayout { get; set; }
+
+    public string PreferedOperatingSystem { get; set; }
+
     public List<UserCourse> UserCourses { get; set; }
 }

@@ -66,6 +66,9 @@ namespace ShortcutTrainerBackend.Services
             // Update the user properties in the DataStore
             existingUser.Name = updatedUser.Name;
             existingUser.Email = updatedUser.Email;
+            existingUser.PreferedLanguage = updatedUser.PreferedLanguage;
+            existingUser.PreferedLayout = updatedUser.PreferedLayout;
+            existingUser.PreferedOperatingSystem = updatedUser.PreferedOperatingSystem;
             // Add other properties as needed
 
             // Simulate asynchronous operation with Task.Delay

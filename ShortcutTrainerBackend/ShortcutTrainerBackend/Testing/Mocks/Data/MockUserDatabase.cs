@@ -11,38 +11,29 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
              {
                  Id = Guid.NewGuid().ToString(),
                  Name = "User1",
-                 Email = "harmonischsensibelerhamster@muell.xyz"
+                 Email = "harmonischsensibelerhamster@muell.xyz",
+                 PreferedLanguage = "de-DE",
+                 PreferedLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10"
              },
              new()
              {
                  Id = Guid.NewGuid().ToString(),
                  Name = "User2",
-                 Email = "anziehendzaghaftergorilla@oida.icu"
+                 Email = "anziehendzaghaftergorilla@oida.icu",
+                 PreferedLanguage = "de-DE",
+                 PreferedLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10"
              },
              new()
              {
                  Id = Guid.NewGuid().ToString(),
                  Name = "User3",
-                 Email = "charismatischliebenswerterfuchs@10minmail.de"
-             },
-            // new()
-            // {
-            //     Id = 4,
-            //     Content = "Was ist die Tastenkombination, um rückgängig zu machen?",
-            //     Shortcut = "Strg+Z"
-            // },
-            // new()
-            // {
-            //     Id = 5,
-            //     Content = "Wie öffnet man die Entwicklertools im Browser?",
-            //     Shortcut = "Strg+Shift+I"
-            // },
-            // new()
-            // {
-            //     Id = 6,
-            //     Content = "Tastenkombination zum Neuladen einer Seite im Browser?",
-            //     Shortcut = "Strg+R"
-            // }
+                 Email = "charismatischliebenswerterfuchs@10minmail.de",
+                 PreferedLanguage = "de-DE",
+                 PreferedLayout = "QWERTZ",
+                 PreferedOperatingSystem = "Windows 10"
+             }
         };
 
         public async Task<IEnumerable<User>> GetDataAsync()

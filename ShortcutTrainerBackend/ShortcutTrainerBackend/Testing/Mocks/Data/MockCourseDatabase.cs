@@ -29,17 +29,17 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                             Tag = "Tag2"
                         }
                     },
-                    // UserCourses =
-                    // {
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
-                    //         },
-                    //         Favorite = true
-                    //     }
-                    // }
+                     UserCourses = new List<UserCourse>
+                     {
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "1", Name = "UserName1", Email = "user1@example.com"
+                             },
+                             Favorite = true
+                         }
+                     }
                 },
                 new Course
                 {
@@ -60,25 +60,25 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                             Tag = "Tag4"
                         }
                     },
-                    // UserCourses =
-                    // {
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "2", Name = "UserName2", Email = "user2@example.com"
-                    //         },
-                    //         Favorite = false
-                    //     }, 
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
-                    //         },
-                    //         Favorite = true
-                    //     }
-                    // }
+                     UserCourses = new List<UserCourse>
+                     {
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "2", Name = "UserName2", Email = "user2@example.com"
+                             },
+                             Favorite = false
+                         },
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "1", Name = "UserName1", Email = "user1@example.com"
+                             },
+                             Favorite = true
+                         }
+                     }
                 },
                 new Course
                 {
@@ -99,25 +99,25 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                             Tag = "Tag5"
                         }
                     },
-                    // UserCourses =
-                    // {
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "3", Name = "UserName3", Email = "user3@example.com"
-                    //         },
-                    //         Favorite = true
-                    //     }, 
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "1", Name = "UserName1", Email = "user1@example.com"
-                    //         }, 
-                    //         Favorite = true
-                    //     }
-                    // }
+                     UserCourses = new List<UserCourse>
+                     {
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "3", Name = "UserName3", Email = "user3@example.com"
+                             },
+                             Favorite = true
+                         },
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "1", Name = "UserName1", Email = "user1@example.com"
+                             },
+                             Favorite = true
+                         }
+                     }
                 },
                 new Course
                 {
@@ -138,25 +138,25 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                             Tag = "Tag3"
                         }
                     },
-                    // UserCourses =
-                    // {
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "4", Name = "UserName4", Email = "user4@example.com"
-                    //         },
-                    //         Favorite = false
-                    //     }, 
-                    //     new UserCourse
-                    //     {
-                    //         User = new User
-                    //         {
-                    //             Id = "3", Name = "UserName3", Email = "user3@example.com"
-                    //         }, 
-                    //         Favorite = true
-                    //     }
-                    // }
+                     UserCourses = new List<UserCourse> 
+                     {
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "4", Name = "UserName4", Email = "user4@example.com"
+                             },
+                             Favorite = false
+                         },
+                         new UserCourse
+                         {
+                             User = new User
+                             {
+                                 Id = "3", Name = "UserName3", Email = "user3@example.com"
+                             },
+                             Favorite = true
+                         }
+                     }
                 }
              };
         }

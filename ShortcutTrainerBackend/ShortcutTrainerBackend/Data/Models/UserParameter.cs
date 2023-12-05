@@ -5,8 +5,8 @@
         public required string? UserID { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
-        public string? PreferedLanguage { get; set; }
-        public string? PreferedOperatingSystem { get; set; }
-        public string? PreferedKeyboardLayout { get; set; }
+        public string? PreferredLanguage { get; set; }
+        public string? PreferredOperatingSystem { get; set; }
+        public string? PreferredKeyboardLayout { get; set; }
     }
 }

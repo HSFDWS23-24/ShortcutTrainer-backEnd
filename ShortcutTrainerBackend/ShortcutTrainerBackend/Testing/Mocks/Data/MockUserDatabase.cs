@@ -12,9 +12,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Id = Guid.NewGuid().ToString(),
                  Name = "User1",
                  Email = "harmonischsensibelerhamster@muell.xyz",
-                 PreferedLanguage = "de-DE",
-                 PreferedKeyboardLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10",
+                 PreferredLanguage = "de-DE",
+                 PreferredKeyboardLayout = "QWERTZ",
+                 PreferredOperatingSystem = "Windows 10",
                  UserCourses = new List<UserCourse>()
              },
              new()
@@ -22,9 +22,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Id = Guid.NewGuid().ToString(),
                  Name = "User2",
                  Email = "anziehendzaghaftergorilla@oida.icu",
-                 PreferedLanguage = "de-DE",
-                 PreferedKeyboardLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10",
+                 PreferredLanguage = "de-DE",
+                 PreferredKeyboardLayout = "QWERTZ",
+                 PreferredOperatingSystem = "Windows 10",
                  UserCourses = new List<UserCourse>()
              },
              new()
@@ -32,9 +32,9 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                  Id = Guid.NewGuid().ToString(),
                  Name = "User3",
                  Email = "charismatischliebenswerterfuchs@10minmail.de",
-                 PreferedLanguage = "de-DE",
-                 PreferedKeyboardLayout = "QWERTZ",
-                 PreferedOperatingSystem = "Windows 10",
+                 PreferredLanguage = "de-DE",
+                 PreferredKeyboardLayout = "QWERTZ",
+                 PreferredOperatingSystem = "Windows 10",
                  UserCourses = new List<UserCourse>()
              }
         };

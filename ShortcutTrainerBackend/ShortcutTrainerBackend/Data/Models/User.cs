@@ -10,11 +10,11 @@ public class User
 
     public string Email { get; set; }
 
-    public string PreferedLanguage { get; set; }
+    public string PreferredLanguage { get; set; }
 
-    public string PreferedKeyboardLayout { get; set; }
+    public string PreferredKeyboardLayout { get; set; }
 
-    public string PreferedOperatingSystem { get; set; }
+    public string PreferredOperatingSystem { get; set; }
 
     public List<UserCourse> UserCourses { get; set; }
 }

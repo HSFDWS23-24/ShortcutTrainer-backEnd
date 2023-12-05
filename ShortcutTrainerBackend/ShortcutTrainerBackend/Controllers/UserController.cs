@@ -5,7 +5,7 @@ using ShortcutTrainerBackend.Services.Interfaces;
 namespace ShortcutTrainerBackend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -19,18 +19,18 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet(Name = nameof(GetUsers))]
-        public async Task<IActionResult> GetUsers([FromQuery] UserParameter request)
+        public async Task<IActionResult> GetUsers()
         {
-            var users = await _userService.GetUsersAsync(request);
+            var users = await _userService.GetUsersAsync();
             return Ok(users);
         }
 
-        //[HttpGet(Name = nameof(GetUser))]
-        //public async Task<IActionResult> GetUser([FromQuery] UserParameter request)
-        //{
-        //    var user = await _userService.GetUserAsync(request);
-        //    return Ok(user);
-        //}
+        [HttpGet(Name = nameof(GetUser))]
+        public async Task<IActionResult> GetUser([FromQuery] UserParameter request)
+        {
+           var user = await _userService.GetUserAsync(request);
+           return Ok(user);
+        }
 
         [HttpPost(Name = nameof(AddUser))]
         public async Task<IActionResult> AddUser([FromBody] User user)
@@ -53,25 +53,25 @@ namespace ShortcutTrainerBackend.Controllers
             }
         }
 
-        //[HttpPost(Name = nameof(UpdateUser))]
-        //public async Task<IActionResult> UpdateUser([FromBody] User user)
-        //{
-        //    try
-        //    {
-        //        if (user == null)
-        //        {
-        //            return BadRequest("User data is invalid.");
-        //        }
+        [HttpPost(Name = nameof(UpdateUser))]
+        public async Task<IActionResult> UpdateUser([FromBody] User user)
+        {
+           try
+           {
+               if (user == null)
+               {
+                   return BadRequest("User data is invalid.");
+               }
 
-        //        var updatedUser = await _userService.UpdateUserAsync(user);
+               var updatedUser = await _userService.UpdateUserAsync(user);
 
-        //        return Ok(updatedUser);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"Error adding user: {ex.Message}");
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-        //    }
-        //}
+               return Ok(updatedUser);
+           }
+           catch (Exception ex)
+           {
+               _logger.LogError($"Error adding user: {ex.Message}");
+               return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+           }
+        }
     }
 }

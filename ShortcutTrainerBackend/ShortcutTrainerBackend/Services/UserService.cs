@@ -12,7 +12,7 @@ namespace ShortcutTrainerBackend.Services
             _mockDatabase = mockDatabase;
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync(UserParameter request)
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             var userList = _mockDatabase.DataStore;
 
@@ -80,9 +80,9 @@ namespace ShortcutTrainerBackend.Services
             // Update the user properties in the DataStore
             existingUser.Name = updatedUser.Name;
             existingUser.Email = updatedUser.Email;
-            existingUser.PreferedLanguage = updatedUser.PreferedLanguage;
-            existingUser.PreferedKeyboardLayout = updatedUser.PreferedKeyboardLayout;
-            existingUser.PreferedOperatingSystem = updatedUser.PreferedOperatingSystem;
+            existingUser.PreferredLanguage = updatedUser.PreferredLanguage;
+            existingUser.PreferredKeyboardLayout = updatedUser.PreferredKeyboardLayout;
+            existingUser.PreferredOperatingSystem = updatedUser.PreferredOperatingSystem;
             // Add other properties as needed
 
             // Simulate asynchronous operation with Task.Delay

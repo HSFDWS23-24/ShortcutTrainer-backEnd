@@ -28,9 +28,4 @@ public class MockJokeDatabase : IMockDatabase<Joke>
         await Task.Delay(2000); // wait 2 seconds before returning any result
         DataStore.AddRange(data);
     }
-
-    public async Task SaveChangesAsync()
-    {
-        await Task.Delay(100);
-    }
 }

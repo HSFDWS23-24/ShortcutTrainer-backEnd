@@ -9,7 +9,7 @@ public class Question
     public required string Content { get; set; }
     public required string Shortcut { get; set; } // ToDo: Format like "strg+c"
     public required QuestionStatus Result { get; set; }
-    public required List<QuestionParameter> QuestionParameter { get; set; }
+    public required QuestionParameter QuestionParameter { get; set; }
 }
 
 public enum QuestionStatus

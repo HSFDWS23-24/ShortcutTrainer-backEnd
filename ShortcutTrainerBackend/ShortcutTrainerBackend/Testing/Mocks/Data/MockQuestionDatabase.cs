@@ -7,106 +7,82 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
     {
         public List<Question> DataStore { get; } = new List<Question>
         {
-            new()
+            new Question()
             {
                 Id = 1,
                 Content = "Wie lautet die Tastenkombination zum Kopieren?",
                 Shortcut = "Strg+C",
                 Result = QuestionStatus.Unanswered,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter = new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 1,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 1,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             },
-            new()
+            new Question()
             {
                 Id = 2,
                 Content = "Wie speichert man ein Dokument mit einer Tastenkombination?",
                 Shortcut = "Strg+S",
                 Result = QuestionStatus.Correct,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter = new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 2,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 2,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             },
-            new()
+            new Question()
             {
                 Id = 3,
                 Content = "Tastenkombination zum Einfügen?",
                 Shortcut = "Strg+V",
                 Result = QuestionStatus.Incorrect,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter = new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 3,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 3,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             },
-            new()
+            new Question()
             {
                 Id = 4,
                 Content = "Was ist die Tastenkombination, um rückgängig zu machen?",
                 Shortcut = "Strg+Z",
                 Result = QuestionStatus.Correct,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter =  new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 1,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 1,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             },
-            new()
+            new Question()
             {
                 Id = 5,
                 Content = "Wie öffnet man die Entwicklertools im Browser?",
                 Shortcut = "Strg+Shift+I",
                 Result = QuestionStatus.Incorrect,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter =  new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 2,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 2,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             },
-            new()
+            new Question()
             {
                 Id = 6,
                 Content = "Tastenkombination zum Neuladen einer Seite im Browser?",
                 Shortcut = "Strg+R",
                 Result = QuestionStatus.Unanswered,
-                QuestionParameter = new List<QuestionParameter>
+                QuestionParameter =  new QuestionParameter
                 {
-                    new()
-                    {
-                        CourseID = 3,
-                        Language = "de_de",
-                        OperatingSystem = "Linux",
-                        KeyboadLayout = "QWERTZ"
-                    }
+                    CourseID = 3,
+                    Language = "de_de",
+                    OperatingSystem = "Linux",
                 }
             }
         };

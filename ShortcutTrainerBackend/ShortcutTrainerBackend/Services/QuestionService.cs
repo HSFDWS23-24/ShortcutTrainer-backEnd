@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using ShortcutTrainerBackend.Data.Models;
+﻿using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShortcutTrainerBackend.Services
 {
@@ -21,29 +18,27 @@ namespace ShortcutTrainerBackend.Services
 
             if (course != null)
             {
-                var questionsForCourse = course.Questions.Where(c => c.QuestionParameter.Any(c => c.CourseID == request.CourseID));
+                var questionsForCourse = course.Questions.Where(c => c.QuestionParameter.CourseID == request.CourseID);
                 return await Task.FromResult(questionsForCourse.AsEnumerable());
             }
             return await Task.FromResult(Enumerable.Empty<Question>());
         }
 
-        public async Task<IEnumerable<Question>> GetUnansweredQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IEnumerable<Question>> GetUnansweredQuestionsAsync(QuestionParameter request)
         {
-            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == courseId);
+            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
             if (course != null)
             {
                 var unansweredQuestions = _mockDatabase.DataStore
-                    .Where(c => c.Id == courseId) // Überprüfe die courseId
+                    .Where(c => c.Id == request.CourseID) // Check the CourseID
                     .SelectMany(course => course.Questions
                         .Where(q =>
                             q.Result == QuestionStatus.Unanswered &&
-                            q.QuestionParameter.Any(param =>
-                                param.CourseID == courseId && // Überprüfe auch die courseId in den Parametern
-                                param.Language == language &&
-                                param.OperatingSystem == OperatingSystem
+                                q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
+                                q.QuestionParameter.Language == request.Language &&
+                                q.QuestionParameter.OperatingSystem == request.OperatingSystem
                             )
-                        )
                     );
 
                 return await Task.FromResult(unansweredQuestions.AsEnumerable());
@@ -52,23 +47,21 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(Enumerable.Empty<Question>());
         }
 
-        public async Task<IEnumerable<Question>> GetIncorrectQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IEnumerable<Question>> GetIncorrectQuestionsAsync(QuestionParameter request)
         {
-            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == courseId);
+            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
             if (course != null)
             {
                 var incorrectQuestions = _mockDatabase.DataStore
-                        .Where(c => c.Id == courseId) // Überprüfe die courseId
+                        .Where(c => c.Id == request.CourseID) // Check the CourseID
                         .SelectMany(course => course.Questions
                             .Where(q =>
                                 q.Result == QuestionStatus.Incorrect &&
-                                q.QuestionParameter.Any(param =>
-                                    param.CourseID == courseId && // Überprüfe auch die courseId in den Parametern
-                                    param.Language == language &&
-                                    param.OperatingSystem == OperatingSystem
+                                    q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
+                                    q.QuestionParameter.Language == request.Language &&
+                                    q.QuestionParameter.OperatingSystem == request.OperatingSystem
                                 )
-                            )
                         );
 
                 return await Task.FromResult(incorrectQuestions.AsEnumerable());
@@ -77,23 +70,21 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(Enumerable.Empty<Question>());
         }
 
-        public async Task<IEnumerable<Question>> GetCorrectQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IEnumerable<Question>> GetCorrectQuestionsAsync(QuestionParameter request)
         {
-            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == courseId);
+            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
             if (course != null)
             {
                 var correctQuestions = _mockDatabase.DataStore
-                        .Where(c => c.Id == courseId) // Überprüfe die courseId
+                        .Where(c => c.Id == request.CourseID) // Check the CourseID
                         .SelectMany(course => course.Questions
                             .Where(q =>
                                 q.Result == QuestionStatus.Correct &&
-                                q.QuestionParameter.Any(param =>
-                                    param.CourseID == courseId && // Überprüfe auch die courseId in den Parametern
-                                    param.Language == language &&
-                                    param.OperatingSystem == OperatingSystem
+                                    q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
+                                    q.QuestionParameter.Language == request.Language &&
+                                    q.QuestionParameter.OperatingSystem == request.OperatingSystem
                                 )
-                            )
                         );
 
                 return await Task.FromResult(correctQuestions.AsEnumerable());
@@ -102,7 +93,7 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(Enumerable.Empty<Question>());
         }
 
-        public async Task UpdateQuestionStatus(int questionId, QuestionStatus result)
+        public async Task UpdateQuestionStatusAsync(int questionId, QuestionStatus result)
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Questions.Any(q => q.Id == questionId));
 

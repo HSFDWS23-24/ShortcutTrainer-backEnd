@@ -26,11 +26,11 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet("unanswered")]
-        public async Task<IActionResult> GetUnansweredQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IActionResult> GetUnansweredQuestions([FromQuery] QuestionParameter request)
         {
             try
             {
-                var unansweredQuestions = await _questionService.GetUnansweredQuestions(courseId, language, OperatingSystem);
+                var unansweredQuestions = await _questionService.GetUnansweredQuestionsAsync(request);
 
                 return (unansweredQuestions.Any()) ?
                        Ok(unansweredQuestions) :
@@ -44,11 +44,11 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet("incorrect")]
-        public async Task<IActionResult> GetIncorrectQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IActionResult> GetIncorrectQuestions([FromQuery] QuestionParameter request)
         {
             try
             {
-                var incorrectQuestions = await _questionService.GetIncorrectQuestions(courseId, language, OperatingSystem);
+                var incorrectQuestions = await _questionService.GetIncorrectQuestionsAsync(request);
 
                 return (incorrectQuestions.Any()) ?
                        Ok(incorrectQuestions) :
@@ -63,11 +63,11 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet("correct")]
-        public async Task<IActionResult> GetCorrectQuestions(int courseId, string language, string OperatingSystem)
+        public async Task<IActionResult> GetCorrectQuestions([FromQuery] QuestionParameter request)
         {
             try
             {
-                var correctQuestions = await _questionService.GetCorrectQuestions(courseId, language, OperatingSystem);
+                var correctQuestions = await _questionService.GetCorrectQuestionsAsync(request);
 
                 return (correctQuestions.Any()) ?
                        Ok(correctQuestions) :
@@ -81,11 +81,9 @@ namespace ShortcutTrainerBackend.Controllers
             }
         }
 
-        //Post-Methode
         [HttpPost("updateAnswer")]
         public async Task<IActionResult> UpdateQuestionStatus(int questionId, QuestionStatus result)
         {
-            //if (questionId <= 0 || !Enum.IsDefined(typeof(QuestionStatus), result) || !Enum.TryParse<QuestionStatus>(result.ToString(), out _))
             if (questionId <= 0 || !Enum.IsDefined(typeof(QuestionStatus), result))
             {
                 return BadRequest("Invalid request data");
@@ -93,12 +91,11 @@ namespace ShortcutTrainerBackend.Controllers
 
             try
             {
-               await _questionService.UpdateQuestionStatus(questionId, result);
+               await _questionService.UpdateQuestionStatusAsync(questionId, result);
                return Ok(new { Message = "Fragestatus erfolgreich aktualisiert", UpdatedQuestionStatus = result });
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
                 return StatusCode(500, "Internal server error");
             }
         }

@@ -30,7 +30,7 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                     PaymentType = "Premium",
                     Category = new Category { Id = 2, Name = "Weitere Kategorie" },
                     Progress = 0,
-                    Questions = questions.Skip(3).Take(5).ToList()
+                    Questions = questions.Take(5).ToList()
                 }
             };
         }

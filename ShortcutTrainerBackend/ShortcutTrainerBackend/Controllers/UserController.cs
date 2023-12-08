@@ -33,7 +33,7 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost(Name = nameof(AddUser))]
-        public async Task<IActionResult> AddUser([FromBody] User user)
+        public async Task<IActionResult> AddUser([FromQuery] User user)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost(Name = nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser([FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromQuery] User user)
         {
            try
            {

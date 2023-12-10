@@ -1,14 +1,19 @@
-using DevExpress.Xpo;
+using System.ComponentModel.DataAnnotations;
+using ShortcutTrainerBackend.Data;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
 public class Question
 {
-    public int Id { get; set; }
+    public required int Id { get; set; }
+    public required string Content { get; set; }
+    public required string Shortcut { get; set; } // ToDo: Format like "strg+c"
+    public required QuestionStatus Status { get; set; }
+}
 
-    // public Course Course { get; set; }
-    
-    public string Content { get; set; }
-    
-    public List<Answer> Answers { get; set; }
+public enum QuestionStatus
+{
+    Unanswered,
+    Correct,
+    Incorrect
 }

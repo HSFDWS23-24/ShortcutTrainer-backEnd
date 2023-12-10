@@ -60,8 +60,7 @@ namespace ShortcutTrainerBackend.Services
         {
             var questions = _mockUserAnwserDatabase.GetDataAsync().Result
             .Where(ua => ua.Answer.Question.Course.Id == course.Id)
-            .Select(ua => ua.Answer.Question)
-            .Distinct();
+            .Select(ua => ua.Answer.Question).DistinctBy(q => q.Id);
 
             var amountQuestions = questions.Count();
 
@@ -83,6 +82,28 @@ namespace ShortcutTrainerBackend.Services
 
         private CourseResponse MapToCourseResponseWithUser(Course course, string userID)
         {
+            var questions = _mockUserAnwserDatabase.GetDataAsync().Result
+            .Where(ua => ua.Answer.Question.Course.Id == course.Id)
+            .Select(ua => ua.Answer.Question).DistinctBy(q => q.Id);
+
+            var amountQuestions = questions.Count();
+
+            var userCorrectAnswers = _mockUserAnwserDatabase.GetDataAsync().Result
+            .Where(ua => ua.User.Id == userID && ua.Answer.Question.Course.Id == course.Id 
+            && ua.QuestionStatus == QuestionStatusType.Correct)
+            .Select(ua => ua.Answer.Question)
+            .DistinctBy(q => q.Id);
+
+            var answeredCorrect = userCorrectAnswers.Count();
+
+            var userIncorrectAnswers = _mockUserAnwserDatabase.GetDataAsync().Result
+            .Where(ua => ua.User.Id == userID && ua.Answer.Question.Course.Id == course.Id
+            && ua.QuestionStatus == QuestionStatusType.Incorrect)
+            .Select(ua => ua.Answer.Question)
+            .DistinctBy(q => q.Id);
+
+            var answeredIncorrect = userIncorrectAnswers.Count();
+
             return new CourseResponse
             {
                 Id = course.Id,
@@ -93,9 +114,9 @@ namespace ShortcutTrainerBackend.Services
                 Subscription = course.Subscription,
                 Tags = course.Tags,
                 IsFavorite = course.UserCourses.FirstOrDefault(uc => uc.User.Id == userID)?.Favorite ?? false,
-                AnsweredCorrect = 0, // You may need to update these values based on actual user data
-                AnsweredIncorrect = 0,
-                AmountQuestions = 0
+                AnsweredCorrect = answeredCorrect, 
+                AnsweredIncorrect = answeredIncorrect,
+                AmountQuestions = amountQuestions
             };
         }
     }

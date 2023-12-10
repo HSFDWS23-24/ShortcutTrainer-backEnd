@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
 builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
 builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
+builder.Services.AddSingleton<IMockDatabase<UserAnswer>, MockUserAnswerDatabase>();
 
 // Add services to the container.
 builder.Services.AddScoped<IJokeService, JokeService>();

@@ -9,12 +9,14 @@ namespace ShortcutTrainerBackend.Services
     public class CourseService : ICourseService
     {
         private readonly IMockDatabase<Course> _mockDatabase;
-        public CourseService(IMockDatabase<Course> mockDatabase)
+        private readonly IMockDatabase<UserAnswer> _mockUserAnwserDatabase;
+        public CourseService(IMockDatabase<Course> mockDatabase, IMockDatabase<UserAnswer> mockUserAnwserDatabase)
         {
             _mockDatabase = mockDatabase;
+            _mockUserAnwserDatabase = mockUserAnwserDatabase;
         }
 
-        public async Task<IEnumerable<Course>> GetCoursesAsync(CourseParameter request)
+        public async Task<IEnumerable<CourseResponse>> GetCoursesAsync(CourseParameter request)
         {
             var userID = request.UserID;
             var language = request.Language ?? "de";
@@ -26,54 +28,75 @@ namespace ShortcutTrainerBackend.Services
             var courses = await _mockDatabase.GetDataAsync();
             if (userID == null || userID == "0") //Session specific logic later
             {
-                courses = courses.Select(c => new Course
-                {
-                    Id = c.Id,
-                    Title = c.Title,
-                    Language = c.Language,
-                    Description = c.Description,
-                    ImageUrl = c.ImageUrl,
-                    Subscription = c.Subscription,
-                    Tags = c.Tags
-                });
-                return courses.Where(c => c.Subscription == SubscriptionType.Free);
+                var freeCourses = courses
+                    .Where(c => c.Subscription == SubscriptionType.Free)
+                    .Select(c => MapToCourseResponse(c));
+
+                return freeCourses.Take(limit);
 
             }
-            courses = courses.Where(c => c.UserCourses.Any(u => u.User.Id == userID));
 
-            courses = courses.Select(c => new Course
+            // Courses from User
+            var userCourses = courses
+                .Where(c => c.UserCourses.Any(u => u.User.Id == userID))
+                .Select(c => MapToCourseResponseWithUser(c, userID));
+
+            // Filter Courses
+            var filteredCourses = userCourses
+               .Where(c => c.Language == language &&
+                           (c.Title.ToLower().Contains(searchString.ToLower()) ||
+                            c.Description.ToLower().Contains(searchString.ToLower())) &&
+                           c.Subscription == subscription);
+
+
+            if (tag != null)
             {
-                Id = c.Id,
-                Title = c.Title,
-                Language = c.Language,
-                Description = c.Description,
-                ImageUrl = c.ImageUrl,
-                Subscription = c.Subscription,
-                Tags = c.Tags,
-                UserCourses = c.UserCourses
-                .Where(uc => uc.User.Id == userID)
-                .Select(uc => new UserCourse
-                {
-                    User = null,
-                    Course = null,
-                    Favorite = uc.Favorite
-                })
-                .ToList()
-            }) ;
-            courses = courses.Where(c => c.Language == language);
-            courses = courses.Where(c =>
-            c.Title.ToLower().Contains(searchString.ToLower()) ||
-            c.Description.ToLower().Contains(searchString.ToLower()));
-            courses = courses.Where(c => c.Subscription == subscription);
-            if(tag != null)
-            {
-                courses = courses.Where(c => c.Tags.Any(t => t.Tag.ToLower() == tag.ToLower()));
+                filteredCourses = filteredCourses.Where(c => c.Tags.Any(t => t.Tag.ToLower() == tag.ToLower()));
             }
-            
-            
 
-            courses = courses.Take(limit);
-            return courses;
+            return filteredCourses.Take(limit);
+        }
+        private CourseResponse MapToCourseResponse(Course course)
+        {
+            var questions = _mockUserAnwserDatabase.GetDataAsync().Result
+            .Where(ua => ua.Answer.Question.Course.Id == course.Id)
+            .Select(ua => ua.Answer.Question)
+            .Distinct();
+
+            var amountQuestions = questions.Count();
+
+            return new CourseResponse
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Language = course.Language,
+                Description = course.Description,
+                ImageUrl = course.ImageUrl,
+                Subscription = course.Subscription,
+                Tags = course.Tags,
+                IsFavorite = null, // Set default value for free courses(no User)
+                AnsweredCorrect = null,
+                AnsweredIncorrect = null,
+                AmountQuestions = amountQuestions
+            };
+        }
+
+        private CourseResponse MapToCourseResponseWithUser(Course course, string userID)
+        {
+            return new CourseResponse
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Language = course.Language,
+                Description = course.Description,
+                ImageUrl = course.ImageUrl,
+                Subscription = course.Subscription,
+                Tags = course.Tags,
+                IsFavorite = course.UserCourses.FirstOrDefault(uc => uc.User.Id == userID)?.Favorite ?? false,
+                AnsweredCorrect = 0, // You may need to update these values based on actual user data
+                AnsweredIncorrect = 0,
+                AmountQuestions = 0
+            };
         }
     }
 }

@@ -18,9 +18,9 @@ public class Course
 
     public List<CourseTag> Tags { get; set; }
 
-    // public List<UserCourse> UserCourses { get; set; }
-    public List<Question> Questions { get; set; }
-    public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
+    public List<UserCourse> UserCourses { get; set; }
+
+    //public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
 }
 
 public enum SubscriptionType

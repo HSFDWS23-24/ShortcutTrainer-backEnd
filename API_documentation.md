@@ -36,10 +36,10 @@ Displays all courses
 ### Request body example
 ```
 {
-   "UserID": <integer>,
-   "Category":"<string>",
-   "Language":"<string>",
-   "OperatingSystem":"<string>",
+   "UserID": 1,
+   "Tag":"<string>",
+   "Language":"en",
+   "SubscriptionType":"0",
    "SearchString":"<string>",
    "Limit":"<string>"
 }
@@ -48,40 +48,50 @@ Displays all courses
 
 ### Responses body example
 ```
-{
-   "id":2,
-   "title":"Beispielkurs 2",
-   "language":"de",
-   "description":"Beschreibung des Beispielkurses 2",
-   "imageUrl":"url_zum_bild_2",
-   "subscription":1,
-   "tags":[
+[
+  {
+    "id": 1,
+    "title": "Beispielkurs 1",
+    "language": "en",
+    "description": "Beschreibung des Beispielkurses 1",
+    "imageUrl": "url_zum_bild_1",
+    "subscription": 0,
+    "tags": [
       {
-         "tag":"Tag1"
+        "tag": "Tag1"
       },
       {
-         "tag":"Tag4"
+        "tag": "Tag2"
       }
-   ]
-}
+    ],
+    "isFavorite": true,
+    "answeredCorrect": 2,
+    "answeredIncorrect": 0,
+    "amountQuestions": 3
+  }
+]
 ```
 ---
 ### Parameter definition
 | IN/OUT | Variable        | Type   | Example                           | Description |
 | ------ | --------------- | ------ | --------------------------------- | ----------- |
-| IN     | UserID          | int32  | ?                                 |
-| IN     | Category        | string | ?                                 |
-| IN     | Language        | string | ?                                 |
-| IN     | OperatingSystem | string | ?                                 |
-| IN     | SearchString    | string | ?                                 |
-| IN     | Limit           | int32  | ?                                 |
-| OUT    | id              | int32  | 1357931                           |
-| OUT    | title           | string | Beispielkurs 2                    |
-| OUT    | language        | string | de                                |
-| OUT    | description     | string | Beschreibung des Beispielkurses 2 |
-| OUT    | imageUrl        | string | url_zum_bild_2                    |
-| OUT    | subscription    | ?      | 1                                 |
-| OUT    | tags            | array  |                                   |
+| IN     | UserID          | int32  | 1                                 | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
+| IN     | Tag             | string | Tag1                              |
+| IN     | Language        | string | en,de,fr                          | Default ohne angabe "de"
+| IN     | SubscriptionType| int32  | 0(free), 1(other)                 | Default ohne angabe 0
+| IN     | SearchString    | string | Beispielkurs 2                    |
+| IN     | Limit           | int32  | 5                                 |
+| OUT    | id              | int32  | 1                                 |
+| OUT    | title           | string | Beispielkurs 1                    |
+| OUT    | language        | string | en                                |
+| OUT    | description     | string | Beschreibung des Beispielkurses 1 |
+| OUT    | imageUrl        | string | url_zum_bild_1                    |
+| OUT    | subscription    | int32  | 0(free)                           |
+| OUT    | tags            | array  | "Tag1", "Tag2"                    |
+| OUT    | isFavorite      | bool   | true                              |
+| OUT    | answeredCorrect | int32  | 2                                 |
+| OUT    | answeredIncorrect | int32  | 0                               | Die Nicht beantworteten Fragen können mit amountQuestions - answeredIncorrect - answeredCorrect berechnet werden
+| OUT    | amountQuestions | int32  | 3                                 |
 
 &uarr; [back to top](#top)
 

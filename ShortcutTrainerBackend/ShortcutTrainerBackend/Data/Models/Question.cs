@@ -8,8 +8,7 @@ public class Question
     public required int Id { get; set; }
     public required string Content { get; set; }
     public required string Shortcut { get; set; } // ToDo: Format like "strg+c"
-    public required QuestionStatus Result { get; set; }
-    public required QuestionParameter QuestionParameter { get; set; }
+    public required QuestionStatus Status { get; set; }
 }
 
 public enum QuestionStatus

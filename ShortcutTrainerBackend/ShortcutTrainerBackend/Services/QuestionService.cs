@@ -16,94 +16,53 @@ namespace ShortcutTrainerBackend.Services
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
-            if (course != null)
-            {
-                var questionsForCourse = course.Questions.Where(c => c.QuestionParameter.CourseID == request.CourseID);
-                return await Task.FromResult(questionsForCourse.AsEnumerable());
-            }
-            return await Task.FromResult(Enumerable.Empty<Question>());
+            if (course == null)
+                return await Task.FromResult(Enumerable.Empty<Question>());
+            
+            return await Task.FromResult(course.Questions);
         }
 
         public async Task<IEnumerable<Question>> GetUnansweredQuestionsAsync(QuestionParameter request)
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
-            if (course != null)
-            {
-                var unansweredQuestions = _mockDatabase.DataStore
-                    .Where(c => c.Id == request.CourseID) // Check the CourseID
-                    .SelectMany(course => course.Questions
-                        .Where(q =>
-                            q.Result == QuestionStatus.Unanswered &&
-                                q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
-                                q.QuestionParameter.Language == request.Language &&
-                                q.QuestionParameter.OperatingSystem == request.OperatingSystem
-                            )
-                    );
-
-                return await Task.FromResult(unansweredQuestions.AsEnumerable());
-            }
-
-            return await Task.FromResult(Enumerable.Empty<Question>());
+            if (course == null)
+                return await Task.FromResult(Enumerable.Empty<Question>());
+            
+            return await Task.FromResult(course.Questions.Where(q => q.Status == QuestionStatus.Unanswered));
         }
 
         public async Task<IEnumerable<Question>> GetIncorrectQuestionsAsync(QuestionParameter request)
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
-            if (course != null)
-            {
-                var incorrectQuestions = _mockDatabase.DataStore
-                        .Where(c => c.Id == request.CourseID) // Check the CourseID
-                        .SelectMany(course => course.Questions
-                            .Where(q =>
-                                q.Result == QuestionStatus.Incorrect &&
-                                    q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
-                                    q.QuestionParameter.Language == request.Language &&
-                                    q.QuestionParameter.OperatingSystem == request.OperatingSystem
-                                )
-                        );
-
-                return await Task.FromResult(incorrectQuestions.AsEnumerable());
-            }
-
-            return await Task.FromResult(Enumerable.Empty<Question>());
+            if (course == null)
+                return await Task.FromResult(Enumerable.Empty<Question>());
+            
+            return await Task.FromResult(course.Questions.Where(q => q.Status == QuestionStatus.Incorrect));
         }
 
         public async Task<IEnumerable<Question>> GetCorrectQuestionsAsync(QuestionParameter request)
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
 
-            if (course != null)
-            {
-                var correctQuestions = _mockDatabase.DataStore
-                        .Where(c => c.Id == request.CourseID) // Check the CourseID
-                        .SelectMany(course => course.Questions
-                            .Where(q =>
-                                q.Result == QuestionStatus.Correct &&
-                                    q.QuestionParameter.CourseID == request.CourseID && // Check also the CourseID in the parameters
-                                    q.QuestionParameter.Language == request.Language &&
-                                    q.QuestionParameter.OperatingSystem == request.OperatingSystem
-                                )
-                        );
-
-                return await Task.FromResult(correctQuestions.AsEnumerable());
-            }
-
-            return await Task.FromResult(Enumerable.Empty<Question>());
+            if (course == null)
+                return await Task.FromResult(Enumerable.Empty<Question>());
+            
+            return await Task.FromResult(course.Questions.Where(q => q.Status == QuestionStatus.Correct));
         }
 
         public async Task UpdateQuestionStatusAsync(int questionId, QuestionStatus result)
         {
             var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Questions.Any(q => q.Id == questionId));
 
-            if (course != null)
+            if (course == null)
+                return;
+            
+            var question = course.Questions.FirstOrDefault(q => q.Id == questionId);
+            if (question != null)
             {
-                var question = course.Questions.FirstOrDefault(q => q.Id == questionId);
-                if (question != null)
-                {
-                    question.Result = result;
-                }
+                question.Status = result;
             }
 
             await _mockDatabase.SetDataAsync(_mockDatabase.DataStore);

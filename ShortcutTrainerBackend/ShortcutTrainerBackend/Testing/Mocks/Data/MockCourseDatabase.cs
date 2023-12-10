@@ -16,9 +16,6 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                     Title = "Beispielkurs 1",
                     Description = "Beschreibung des Beispielkurses 1",
                     ImageUrl = "url_zum_bild_1",
-                    PaymentType = "Kostenlos",
-                    Category = new Category { Id = 1, Name = "Beispielkategorie" },
-                    Progress = 0,
                     Questions = questions.Take(5).ToList()
                 },
                 new()
@@ -27,9 +24,6 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
                     Title = "Beispielkurs 2",
                     Description = "Beschreibung des Beispielkurses 2",
                     ImageUrl = "url_zum_bild_2",
-                    PaymentType = "Premium",
-                    Category = new Category { Id = 2, Name = "Weitere Kategorie" },
-                    Progress = 0,
                     Questions = questions.Take(5).ToList()
                 }
             };

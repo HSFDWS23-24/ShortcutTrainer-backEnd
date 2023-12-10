@@ -19,6 +19,7 @@ public class Course
     public List<CourseTag> Tags { get; set; }
 
     // public List<UserCourse> UserCourses { get; set; }
+    public List<Question> Questions { get; set; }
 }
 
 public enum SubscriptionType

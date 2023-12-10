@@ -1,4 +1,4 @@
-﻿using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 

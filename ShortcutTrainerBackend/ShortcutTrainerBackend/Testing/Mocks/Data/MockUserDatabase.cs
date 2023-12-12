@@ -9,7 +9,7 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
         {
              new()
              {
-                 Id = Guid.NewGuid().ToString(),
+                 Id = default(Guid).ToString(),
                  Name = "User1",
                  Email = "harmonischsensibelerhamster@muell.xyz",
                  PreferredLanguage = "de-DE",

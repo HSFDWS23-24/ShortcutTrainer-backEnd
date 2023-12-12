@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
 builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
 builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
 builder.Services.AddSingleton<IMockDatabase<User>, MockUserDatabase>();
+builder.Services.AddSingleton<IMockDatabase<UserCourse>, MockUserCourseDatabase>();
 
 // Add services to the container.
 builder.Services.AddScoped<IJokeService, JokeService>();
@@ -25,6 +26,7 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserCourseService, UserCourseService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

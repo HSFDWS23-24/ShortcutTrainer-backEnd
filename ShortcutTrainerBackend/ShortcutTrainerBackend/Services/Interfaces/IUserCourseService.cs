@@ -6,6 +6,6 @@ namespace ShortcutTrainerBackend.Services.Interfaces
     {
         Task<IEnumerable<UserCourse>> GetUserCoursesAsync(UserCourseParameter request);
         Task<UserCourse> GetUserCourseAsync(UserCourseParameter request);
-        Task<UserCourse> AddUserCourseAsync(UserCourse newUserCourse);
+        Task<UserCourse> AddUserCourseAsync(UserCourseParameter request);
     }
 }

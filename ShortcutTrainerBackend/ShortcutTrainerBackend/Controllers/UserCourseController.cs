@@ -32,5 +32,26 @@ namespace ShortcutTrainerBackend.Controllers
             var userCourse = await _userCourseService.GetUserCourseAsync(request);
             return Ok(userCourse);
         }
+
+        [HttpPost(Name = nameof(AddUserCourse))]
+        public async Task<IActionResult> AddUserCourse([FromQuery] UserCourseParameter request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("UserCourse data is invalid.");
+                }
+
+                var addedUserCourse = await _userCourseService.AddUserCourseAsync(request);
+
+                return Ok(addedUserCourse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error adding user: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+            }
+        }
     }
 }

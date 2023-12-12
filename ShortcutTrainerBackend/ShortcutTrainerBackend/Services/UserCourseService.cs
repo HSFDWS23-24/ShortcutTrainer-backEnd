@@ -18,10 +18,20 @@ namespace ShortcutTrainerBackend.Services
         public async Task<IEnumerable<UserCourse>> GetUserCoursesAsync(UserCourseParameter request)
         {
             var userCourseList = _mockDatabaseUserCourse.DataStore.Where(x => 
-                x.User.Id.Equals(request.UserID));
+                x.UserId.Equals(request.UserID));
 
             if (userCourseList != null)
             {
+                foreach(var userCourse in userCourseList)
+                {
+                    var course = _mockDatabaseCourse.DataStore.FirstOrDefault(x => x.Id.Equals(userCourse.CourseId));
+                    
+                    if (course != null)
+                    {
+                        userCourse.Course = course;
+                    }
+                }
+
                 return await Task.FromResult(userCourseList);
             }
             return await Task.FromResult(Enumerable.Empty<UserCourse>());
@@ -30,21 +40,50 @@ namespace ShortcutTrainerBackend.Services
         public async Task<UserCourse> GetUserCourseAsync(UserCourseParameter request)
         {
             var userCourse = _mockDatabaseUserCourse.DataStore.FirstOrDefault(x =>
-                x.User.Id.Equals(request.UserID) &&
-                x.Course.Id.Equals(request.CourseID));
+                x.UserId.Equals(request.UserID) &&
+                x.CourseId.Equals(request.CourseID));
 
             if (userCourse != null)
             {
+                var course = _mockDatabaseCourse.DataStore.FirstOrDefault(x => x.Id.Equals(request.CourseID));
+
+                if (course != null)
+                {
+                    userCourse.Course = course;
+                }
+
                 return await Task.FromResult(userCourse);
             }
             return await Task.FromResult(new UserCourse());
         }
 
-        public async Task<UserCourse> AddUserCourseAsync(UserCourse newUserCourse)
+        public async Task<UserCourse> AddUserCourseAsync(UserCourseParameter request)
         {
-            if (newUserCourse == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(newUserCourse));
+                throw new ArgumentNullException(nameof(request));
+            }
+            var userCourse = _mockDatabaseUserCourse.DataStore.FirstOrDefault(x =>
+                x.UserId.Equals(request.UserID) &&
+                x.CourseId.Equals(request.CourseID));
+
+            if (userCourse != null)
+            {
+                throw new InvalidOperationException("UserCourse with the same IDs already exists");
+            }
+
+                var newUserCourse = new UserCourse()
+            {
+                UserId = request.UserID,
+                CourseId = request.CourseID,
+                Favorite = request.Favorite
+            };
+
+            var course = _mockDatabaseCourse.DataStore.FirstOrDefault(x => x.Id.Equals(request.CourseID));
+
+            if (course != null)
+            {
+                newUserCourse.Course = course;
             }
 
             // Add the new user to the database

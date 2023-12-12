@@ -10,14 +10,18 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
         {
              new()
              {
-                 User = new User() { Id = default(Guid).ToString() },
-                 Course = new Course() { Id = 1 },
+                 UserId = default(Guid).ToString(),
+                 CourseId = 1,
+                 //User = new User() { Id = default(Guid).ToString() },
+                 //Course = new Course() { Id = 1 },
                  Favorite = true
              },
              new()
              {
-                 User = new User() { Id = default(Guid).ToString() },
-                 Course = new Course() { Id = 2 },
+                 UserId = default(Guid).ToString(),
+                 CourseId = 2,
+                 //User = new User() { Id = default(Guid).ToString() },
+                 //Course = new Course() { Id = 2 },
                  Favorite = false
              }
         };

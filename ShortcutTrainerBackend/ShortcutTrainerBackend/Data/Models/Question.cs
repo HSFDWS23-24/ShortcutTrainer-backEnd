@@ -2,29 +2,30 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("question")]
+[Persistent("question")]
 public class Question : XPLiteObject
 {
     public Question(Session session) : base(session) { }
-    public Question() : base(XpoDefault.Session) { }
 
-    // [Persistent("id"), Key(AutoGenerate = true)]
+    [Persistent("id"), Key(AutoGenerate = true)]
     public int Id;
 
-    // [Persistent("course_id"), Association("Questions")]
+    [Persistent("course_id"), Association("Course-Question")]
     public Course Course
     {
-        get => GetPropertyValue<Course>();
-        set => SetPropertyValue(nameof(Course), value);
+        get => fCourse;
+        set => SetPropertyValue(nameof(Course), ref fCourse, value);
     }
+    private Course fCourse;
 
-    // [Persistent("content"), Size(128)]
+    [Persistent("content"), Size(128)]
     public string Content
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Content), value);
+        get => fContent;
+        set => SetPropertyValue(nameof(Content), ref fContent, value);
     }
+    private string fContent;
 
-    // [Association("Answers")]
+    [Association("Question-Answer")]
     public XPCollection<Answer> Answers => GetCollection<Answer>();
 }

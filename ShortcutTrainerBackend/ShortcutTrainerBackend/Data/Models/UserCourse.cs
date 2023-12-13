@@ -2,30 +2,28 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("user_course")]
+public struct UserCourseKey
+{
+    [Persistent("user_id"), Association("User-UserCourse")]
+    public User User { get; set; }
+
+    [Persistent("course_id"), Association("Course-UserCourse")]
+    public Course Course { get; set; }
+}
+
+[Persistent("user_course")]
 public class UserCourse : XPLiteObject
 {
     public UserCourse(Session session) : base(session) { }
-    public UserCourse() : base(XpoDefault.Session) { }
 
-    // [Persistent("user_id"), Association("UserCourses-Users")]
-    public User User
-    {
-        get => GetPropertyValue<User>();
-        set => SetPropertyValue(nameof(User), value);
-    }
+    [Key, Persistent]  
+    public UserCourseKey Key {get; set;}  
 
-    // [Persistent("course_id"), Association("UserCourses-Courses")]
-    public Course Course
-    {
-        get => GetPropertyValue<Course>();
-        set => SetPropertyValue(nameof(Course), value);
-    }
-
-    // [Persistent("favorite")]
+    [Persistent("favorite")]
     public bool Favorite
     {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(nameof(Favorite), value);
+        get => fFavorite;
+        set => SetPropertyValue(nameof(Favorite), ref fFavorite, value);
     }
+    private bool fFavorite;
 }

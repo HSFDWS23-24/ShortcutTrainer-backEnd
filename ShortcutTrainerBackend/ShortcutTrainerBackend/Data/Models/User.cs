@@ -2,33 +2,38 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("_user")]
+[Persistent("_user")]
 public class User : XPLiteObject
 {
     public User(Session session) : base(session) { }
-    public User() : base(XpoDefault.Session) { }
 
-    // [Persistent("id"), Key(AutoGenerate = false), Size(36)]
+    [Persistent("id"), Key(AutoGenerate = false), Size(36)]
     public string Id
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Id), value);
+        get => fId;
+        set => SetPropertyValue(nameof(Id), ref fId, value);
     }
+    private string fId;
 
-    // [Persistent("name"), Size(128)]
+    [Persistent("name"), Size(128)]
     public string Name
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Name), value);
+        get => fName;
+        set => SetPropertyValue(nameof(Name), ref fName, value);
     }
+    private string fName;
 
-    // [Persistent("email"), Size(320)]
+    [Persistent("email"), Size(320)]
     public string Email
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Email), value);
+        get => fEmail;
+        set => SetPropertyValue(nameof(Email), ref fEmail, value);
     }
+    private string fEmail;
 
-    // [Association("UserCourses-Users")]
+    [Association("User-UserCourse")]
     public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
+    
+    [Association("User-UserAnswer")]
+    public XPCollection<UserAnswer> UserAnswers => GetCollection<UserAnswer>();
 }

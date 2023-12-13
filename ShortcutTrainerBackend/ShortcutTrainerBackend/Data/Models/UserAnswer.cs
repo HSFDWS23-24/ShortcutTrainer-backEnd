@@ -2,36 +2,28 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("user_answer")]
+public struct UserAnswerKey
+{
+    [Persistent("user_id"), Association("User-UserAnswer")]
+    public User User { get; set; }
+
+    [Persistent("answer_id"), Association("Answer-UserAnswer")]
+    public Answer Answer { get; set; }
+}
+
+[Persistent("user_answer")]
 public class UserAnswer : XPLiteObject
 {
     public UserAnswer(Session session) : base(session) { }
+    
+    [Key, Persistent]  
+    public UserAnswerKey Key {get; set;}  
 
-    // [Persistent("user_id"), Association("UserAnswers")]
-    public User User
+    [Persistent("question_status")]
+    public string QuestionStatus
     {
-        get => GetPropertyValue<User>();
-        set => SetPropertyValue(nameof(User), value);
+        get => fQuestionStatus;
+        set => SetPropertyValue(nameof(QuestionStatus), ref fQuestionStatus, value);
     }
-
-    // [Persistent("answer_id"), Association("UserAnswers")]
-    public Answer Answer
-    {
-        get => GetPropertyValue<Answer>();
-        set => SetPropertyValue(nameof(Answer), value);
-    }
-
-    // [Persistent("question_status")]
-    public QuestionStatusType QuestionStatus
-    {
-        get => GetPropertyValue<QuestionStatusType>();
-        set => SetPropertyValue(nameof(QuestionStatus), value);
-    }
-}
-
-public enum QuestionStatusType
-{
-    Correct,
-    Incorrect,
-    Unanswered
+    private string fQuestionStatus;
 }

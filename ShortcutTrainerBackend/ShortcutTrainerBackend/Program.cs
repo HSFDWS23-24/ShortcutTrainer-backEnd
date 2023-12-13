@@ -1,6 +1,7 @@
 using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
 using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Database;
 using ShortcutTrainerBackend.Services;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Data;
@@ -12,11 +13,13 @@ using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ToDo: Connect to database
+// ToDo: Improve database handling
+DatabaseHelper.CreateDatabaseConnection();
+// ToDo: uncomment if you want to delete all data from mock db and demonstrate data creation via DevExpress.Xpo
+// DatabaseHelper.ShowDemo();
+
 // ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
-builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
-builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
 
 // Add services to the container.
 builder.Services.AddScoped<IJokeService, JokeService>();

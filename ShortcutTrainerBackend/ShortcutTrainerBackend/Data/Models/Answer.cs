@@ -2,33 +2,38 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("answer")]
+[Persistent("answer")]
 public class Answer : XPLiteObject
 {
     public Answer(Session session) : base(session) { }
-    public Answer() : base(XpoDefault.Session) { }
 
-    // [Persistent("id"), Key(AutoGenerate = true)]
+    [Persistent("id"), Key(AutoGenerate = true)]
     public int Id;
 
-    // [Persistent("question_id"), Association("Answers")]
+    [Persistent("question_id"), Association("Question-Answer")]
     public Question Question
     {
-        get => GetPropertyValue<Question>();
-        set => SetPropertyValue(nameof(Question), value);
+        get => fQuestion;
+        set => SetPropertyValue(nameof(Question), ref fQuestion, value);
     }
+    private Question fQuestion;
 
-    // [Persistent("system"), Size(16)]
+    [Persistent("system"), Size(16)]
     public string System
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(System), value);
+        get => fSystem;
+        set => SetPropertyValue(nameof(fSystem), ref fSystem, value);
     }
+    private string fSystem;
 
-    // [Persistent("shortcut"), Size(SizeAttribute.Unlimited)]
+    [Persistent("shortcut"), Size(SizeAttribute.Unlimited)]
     public string Shortcut
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Shortcut), value);
+        get => fShortcut;
+        set => SetPropertyValue(nameof(fShortcut), ref fShortcut, value);
     }
+    private string fShortcut;
+    
+    [Association("Answer-UserAnswer")]
+    public XPCollection<UserAnswer> UserAnswers => GetCollection<UserAnswer>();
 }

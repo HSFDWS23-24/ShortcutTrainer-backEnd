@@ -2,59 +2,60 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-// [Persistent("course")]
+[Persistent("course")]
 public class Course : XPLiteObject
 {
     public Course(Session session) : base(session) { }
-    public Course() : base(XpoDefault.Session) { }
     
-    // [Persistent("id"), Key(AutoGenerate = true)]
+    [Persistent("id"), Key(AutoGenerate = true)]
     public int Id;
 
-    // [Persistent("title"), Size(128)]
+    [Persistent("title"), Size(128)]
     public string Title
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Title), value);
+        get => fTitle;
+        set => SetPropertyValue(nameof(Title), ref fTitle, value);
     }
+    private string fTitle;
 
-    // [Persistent("language"), Size(2)]
+    [Persistent("language"), Size(2)]
     public string Language
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Language), value);
+        get => fLanguage;
+        set => SetPropertyValue(nameof(Language), ref fLanguage, value);
     }
+    private string fLanguage;
 
-    // [Persistent("description")]
+    [Persistent("description")]
     public string Description
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(Description), value);
+        get => fDescription;
+        set => SetPropertyValue(nameof(Description), ref fDescription, value);
     }
+    private string fDescription;
 
-    // [Persistent("image_url"), Size(128)]
+    [Persistent("image_url"), Size(128)]
     public string ImageUrl
     {
-        get => GetPropertyValue<string>();
-        set => SetPropertyValue(nameof(ImageUrl), value);
+        get => fImageUrl;
+        set => SetPropertyValue(nameof(ImageUrl), ref fImageUrl, value);
     }
+    private string fImageUrl;
 
-    // [Persistent("subscription")]
-    public SubscriptionType Subscription
+    [Persistent("subscription")]
+    public string Subscription
     {
-        get => GetPropertyValue<SubscriptionType>();
-        set => SetPropertyValue(nameof(Subscription), value);
+        get => fSubscription;
+        set => SetPropertyValue(nameof(Subscription), ref fSubscription, value);
     }
+    private string fSubscription;
 
-    // [Association("CourseTags")]
+    [Association("Course-CourseTag")]
     public XPCollection<CourseTag> Tags => GetCollection<CourseTag>();
     
-    // [Association("UserCourses-Courses")]
+    [Association("Course-UserCourse")]
     public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
-}
 
-public enum SubscriptionType
-{
-    Free,
-    Other
+    [Association("Course-Question")]
+    public XPCollection<Question> Questions => GetCollection<Question>();
 }

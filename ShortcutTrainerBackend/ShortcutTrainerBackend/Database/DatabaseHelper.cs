@@ -1,5 +1,6 @@
 using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
+using Newtonsoft.Json;
 using ShortcutTrainerBackend.Data.Models;
 
 namespace ShortcutTrainerBackend.Database;
@@ -8,15 +9,48 @@ public static class DatabaseHelper
 {
     public static void CreateDatabaseConnection()
     {
+        var databaseConfig = GetDatabaseConfig();
+
+        if (databaseConfig == null)
+        {
+            Console.WriteLine("Unable to evaluate database config.");
+            return;
+        }
+        
         var connectionString = PostgreSqlConnectionProvider.GetConnectionString(
-            server: "db-shortcut-be-dev-gercentral-100.postgres.database.azure.com",
-            port: 5432,
-            userId: "shortcut_trainer_hsfd",
-            password: "hsfd2023$",
-            database: "mock"
+            server: databaseConfig.Server,
+            port: databaseConfig.Port,
+            userId: databaseConfig.UserId,
+            password: databaseConfig.Password,
+            database: databaseConfig.Database
         );
         
         XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOption.None);
+    }
+
+    private static DatabaseConfig? GetDatabaseConfig()
+    {
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Database", "config.json");
+        DatabaseConfig? databaseConfig = null;
+        try
+        {
+            var jsonText = File.ReadAllText(filePath);
+            databaseConfig = JsonConvert.DeserializeObject<DatabaseConfig>(jsonText);
+        }
+        catch (Exception ex)
+        {
+            var configTemplate = """
+                                 {
+                                   "server": "your_server",
+                                   "port": 5432,
+                                   "userId": "your_user_id",
+                                   "password": "your_password",
+                                   "database": "your_database"
+                                 }
+                                 """;
+            Console.WriteLine($"Error reading config file: {ex.Message}\nJSON file for database configuration required (Database/config.json):\n{configTemplate}");
+        }
+        return databaseConfig;
     }
     
     public static void ShowDemo()
@@ -187,4 +221,13 @@ public static class DatabaseHelper
         
         uow.CommitChanges();
     }
+}
+
+public class DatabaseConfig
+{
+    public required string Server { get; set; }
+    public required int Port { get; set; }
+    public required string UserId { get; set; }
+    public required string Password { get; set; }
+    public required string Database { get; set; }
 }

@@ -82,17 +82,17 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost("updateAnswer")]
-        public async Task<IActionResult> UpdateQuestionStatus(int questionId, QuestionStatus result)
+        public async Task<IActionResult> UpdateQuestionStatus(int questionId, string questionStatus)
         {
-            if (questionId <= 0 || !Enum.IsDefined(typeof(QuestionStatus), result))
+            if (questionId <= 0 || questionStatus != "correct" || questionStatus != "incorrect" || questionStatus != "unanswered")
             {
                 return BadRequest("Invalid request data");
             }
 
             try
             {
-               await _questionService.UpdateQuestionStatusAsync(questionId, result);
-               return Ok(new { Message = "Fragestatus erfolgreich aktualisiert", UpdatedQuestionStatus = result });
+               await _questionService.UpdateQuestionStatusAsync(questionId, questionStatus);
+               return Ok(new { Message = "Fragestatus erfolgreich aktualisiert", UpdatedQuestionStatus = questionStatus });
             }
             catch (Exception ex)
             {

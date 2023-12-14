@@ -1,19 +1,31 @@
-using System.ComponentModel.DataAnnotations;
-using ShortcutTrainerBackend.Data;
+using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-public class Question
+[Persistent("question")]
+public class Question : XPLiteObject
 {
-    public required int Id { get; set; }
-    public required string Content { get; set; }
-    public required string Shortcut { get; set; } // ToDo: Format like "strg+c"
-    public required QuestionStatus Status { get; set; }
-}
+    public Question(Session session) : base(session) { }
 
-public enum QuestionStatus
-{
-    Unanswered,
-    Correct,
-    Incorrect
+    [Persistent("id"), Key(AutoGenerate = true)]
+    public int Id;
+
+    [Persistent("course_id"), Association("Course-Question")]
+    public Course Course
+    {
+        get => fCourse;
+        set => SetPropertyValue(nameof(Course), ref fCourse, value);
+    }
+    private Course fCourse;
+
+    [Persistent("content"), Size(128)]
+    public string Content
+    {
+        get => fContent;
+        set => SetPropertyValue(nameof(Content), ref fContent, value);
+    }
+    private string fContent;
+
+    [Association("Question-Answer")]
+    public XPCollection<Answer> Answers => GetCollection<Answer>();
 }

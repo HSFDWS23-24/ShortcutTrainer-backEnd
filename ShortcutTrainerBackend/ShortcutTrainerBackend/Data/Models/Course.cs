@@ -2,28 +2,60 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-public class Course
+[Persistent("course")]
+public class Course : XPLiteObject
 {
-    public int Id { get; set; }
-
-    public string Title { get; set; }
+    public Course(Session session) : base(session) { }
     
-    public string Language { get; set; }
+    [Persistent("id"), Key(AutoGenerate = true)]
+    public int Id;
 
-    public string Description { get; set; }
+    [Persistent("title"), Size(128)]
+    public string Title
+    {
+        get => fTitle;
+        set => SetPropertyValue(nameof(Title), ref fTitle, value);
+    }
+    private string fTitle;
+
+    [Persistent("language"), Size(2)]
+    public string Language
+    {
+        get => fLanguage;
+        set => SetPropertyValue(nameof(Language), ref fLanguage, value);
+    }
+    private string fLanguage;
+
+    [Persistent("description")]
+    public string Description
+    {
+        get => fDescription;
+        set => SetPropertyValue(nameof(Description), ref fDescription, value);
+    }
+    private string fDescription;
+
+    [Persistent("image_url"), Size(128)]
+    public string ImageUrl
+    {
+        get => fImageUrl;
+        set => SetPropertyValue(nameof(ImageUrl), ref fImageUrl, value);
+    }
+    private string fImageUrl;
+
+    [Persistent("subscription")]
+    public string Subscription
+    {
+        get => fSubscription;
+        set => SetPropertyValue(nameof(Subscription), ref fSubscription, value);
+    }
+    private string fSubscription;
+
+    [Association("Course-CourseTag")]
+    public XPCollection<CourseTag> Tags => GetCollection<CourseTag>();
     
-    public string ImageUrl { get; set; }
+    [Association("Course-UserCourse")]
+    public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
 
-    public SubscriptionType Subscription { get; set; }
-
-    public List<CourseTag> Tags { get; set; }
-
-    // public List<UserCourse> UserCourses { get; set; }
-    public List<Question> Questions { get; set; }
-}
-
-public enum SubscriptionType
-{
-    Free,
-    Other
+    [Association("Course-Question")]
+    public XPCollection<Question> Questions => GetCollection<Question>();
 }

@@ -8,7 +8,27 @@ namespace ShortcutTrainerBackend.Services
     {
         public async Task<IEnumerable<Question>> GetQuestionsAsync(QuestionParameter request)
         {
-            return await Task.FromResult(Enumerable.Empty<Question>());
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Question>> GetUnansweredQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Question>> GetIncorrectQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Question>> GetCorrectQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateQuestionStatusAsync(int questionId, string questionStatus)
+        {
+            throw new NotImplementedException();
         }
     }
 }

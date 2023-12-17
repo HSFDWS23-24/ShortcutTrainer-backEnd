@@ -8,6 +8,6 @@ namespace ShortcutTrainerBackend.Services.Interfaces
         Task<IEnumerable<Question>> GetUnansweredQuestionsAsync(QuestionParameter request);
         Task<IEnumerable<Question>> GetIncorrectQuestionsAsync(QuestionParameter request);
         Task<IEnumerable<Question>> GetCorrectQuestionsAsync(QuestionParameter request);
-        Task UpdateQuestionStatusAsync(int questionId, QuestionStatus result);
+        Task UpdateQuestionStatusAsync(int questionId, string questionStatus);
     }
 }

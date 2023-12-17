@@ -2,18 +2,28 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-public class UserAnswer
+public struct UserAnswerKey
 {
+    [Persistent("user_id"), Association("User-UserAnswer")]
     public User User { get; set; }
 
+    [Persistent("answer_id"), Association("Answer-UserAnswer")]
     public Answer Answer { get; set; }
-    
-    public QuestionStatusType QuestionStatus { get; set; }
 }
 
-public enum QuestionStatusType
+[Persistent("user_answer")]
+public class UserAnswer : XPLiteObject
 {
-    Correct,
-    Incorrect,
-    Unanswered
+    public UserAnswer(Session session) : base(session) { }
+    
+    [Key, Persistent]  
+    public UserAnswerKey Key {get; set;}  
+
+    [Persistent("question_status")]
+    public string QuestionStatus
+    {
+        get => fQuestionStatus;
+        set => SetPropertyValue(nameof(QuestionStatus), ref fQuestionStatus, value);
+    }
+    private string fQuestionStatus;
 }

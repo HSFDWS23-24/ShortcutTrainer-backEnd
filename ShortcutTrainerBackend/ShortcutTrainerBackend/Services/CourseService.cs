@@ -1,5 +1,4 @@
-﻿using DevExpress.Xpo;
-using ShortcutTrainerBackend.Data.Models;
+﻿using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 using System.Collections.Generic;

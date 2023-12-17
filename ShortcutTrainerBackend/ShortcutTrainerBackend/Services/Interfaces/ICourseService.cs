@@ -4,6 +4,6 @@ namespace ShortcutTrainerBackend.Services.Interfaces
 {
     public interface ICourseService
     {
-        Task<IEnumerable<CourseResponse>> GetCoursesAsync(CourseParameter request);
+        Task<IEnumerable<Course>> GetCoursesAsync(CourseParameter request);
     }
 }

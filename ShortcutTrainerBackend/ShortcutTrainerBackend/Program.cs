@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ToDo: Improve database handling
 DatabaseHelper.CreateDatabaseConnection();
 // ToDo: uncomment if you want to delete all data from mock db and demonstrate data creation via DevExpress.Xpo
-// DatabaseHelper.ShowDemo();
+//DatabaseHelper.ShowDemo();
 
 // ToDo: registration of required mock databases; can now be used for DI in services
 builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();

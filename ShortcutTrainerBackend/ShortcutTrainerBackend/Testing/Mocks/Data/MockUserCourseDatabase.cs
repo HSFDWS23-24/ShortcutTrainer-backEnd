@@ -8,22 +8,22 @@ namespace ShortcutTrainerBackend.Testing.Mocks.Data
     {
         public List<UserCourse> DataStore { get; } = new List<UserCourse>
         {
-             new()
-             {
-                 UserId = default(Guid).ToString(),
-                 CourseId = 1,
-                 //User = new User() { Id = default(Guid).ToString() },
-                 //Course = new Course() { Id = 1 },
-                 Favorite = true
-             },
-             new()
-             {
-                 UserId = default(Guid).ToString(),
-                 CourseId = 2,
-                 //User = new User() { Id = default(Guid).ToString() },
-                 //Course = new Course() { Id = 2 },
-                 Favorite = false
-             }
+             //new()
+             //{
+             //    UserId = default(Guid).ToString(),
+             //    CourseId = 1,
+             //    //User = new User() { Id = default(Guid).ToString() },
+             //    //Course = new Course() { Id = 1 },
+             //    Favorite = true
+             //},
+             //new()
+             //{
+             //    UserId = default(Guid).ToString(),
+             //    CourseId = 2,
+             //    //User = new User() { Id = default(Guid).ToString() },
+             //    //Course = new Course() { Id = 2 },
+             //    Favorite = false
+             //}
         };
 
         public async Task<IEnumerable<UserCourse>> GetDataAsync()

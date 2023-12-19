@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Services;
 using ShortcutTrainerBackend.Services.Interfaces;
 
 namespace ShortcutTrainerBackend.Controllers
@@ -22,14 +23,27 @@ namespace ShortcutTrainerBackend.Controllers
         public async Task<IActionResult> GetUsers()
         {
             var users = await _userService.GetUsersAsync();
-            return Ok(users);
+            return (users.Any()) ?
+                Ok(users) :
+                NotFound("Es wurden keine Benutzer gefunden.");
         }
 
         [HttpGet(Name = nameof(GetUser))]
         public async Task<IActionResult> GetUser([FromQuery] UserParameter request)
         {
-           var user = await _userService.GetUserAsync(request);
-           return Ok(user);
+            try
+            {
+                var user = await _userService.GetUserAsync(request);
+
+                return (!user.Id.Equals(default(Guid).ToString())) ?
+                       Ok(user) :
+                       NotFound("Es wurde kein Benutzer mit der ID gefunden.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Fehler beim Abrufen des Benutzers: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
+            }
         }
 
         [HttpPost(Name = nameof(AddUser))]
@@ -44,12 +58,14 @@ namespace ShortcutTrainerBackend.Controllers
 
                 var addedUser = await _userService.AddUserAsync(user);
 
-                return Ok(addedUser);
+                return (!addedUser.Id.Equals(default(Guid).ToString())) ?
+                       Ok(user) :
+                       Problem("Der Benutzer existiert bereits.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error adding user: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                _logger.LogError($"Fehler beim Hinzufügen des Benutzers: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
             }
         }
 
@@ -63,15 +79,17 @@ namespace ShortcutTrainerBackend.Controllers
                    return BadRequest("User data is invalid.");
                }
 
-               var updatedUser = await _userService.UpdateUserAsync(user);
+                var updateUser = await _userService.UpdateUserAsync(user);
 
-               return Ok(updatedUser);
+                return (!updateUser.Id.Equals(default(Guid).ToString())) ?
+                       Ok(user) :
+                       Problem("Der Benutzer existiert nicht.");
            }
            catch (Exception ex)
-           {
-               _logger.LogError($"Error adding user: {ex.Message}");
-               return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
-           }
+            {
+                _logger.LogError($"Fehler beim Updaten des Benutzers: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
+            }
         }
     }
 }

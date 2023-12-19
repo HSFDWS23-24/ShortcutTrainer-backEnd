@@ -22,15 +22,37 @@ namespace ShortcutTrainerBackend.Controllers
         [HttpGet(Name = nameof(GetUserCourses))]
         public async Task<IActionResult> GetUserCourses([FromQuery] UserCourseParameter request)
         {
-            var userCourses = await _userCourseService.GetUserCoursesAsync(request);
-            return Ok(userCourses);
+            try
+            {
+                var userCourses = await _userCourseService.GetUserCoursesAsync(request);
+
+                return (userCourses.Any()) ?
+                       Ok(userCourses) :
+                       NotFound("Es wurden keine Kurse für den Benutzer gefunden.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Fehler beim Abrufen der Kurse des Benutzers: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
+            }
         }
 
         [HttpGet(Name = nameof(GetUserCourse))]
         public async Task<IActionResult> GetUserCourse([FromQuery] UserCourseParameter request)
         {
-            var userCourse = await _userCourseService.GetUserCourseAsync(request);
-            return Ok(userCourse);
+            try
+            {
+                var userCourse = await _userCourseService.GetUserCourseAsync(request);
+
+                return (!userCourse.User.Id.Equals(default(Guid).ToString())) ?
+                       Ok(userCourse) :
+                       NotFound("Der Kurs wurde für den Benutzer nicht gefunden");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Fehler beim Abrufen des Kurses des Benutzers: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
+            }
         }
 
         [HttpPost(Name = nameof(AddUserCourse))]
@@ -40,17 +62,42 @@ namespace ShortcutTrainerBackend.Controllers
             {
                 if (request == null)
                 {
-                    return BadRequest("UserCourse data is invalid.");
+                    return BadRequest("Parameter are invalid.");
                 }
 
                 var addedUserCourse = await _userCourseService.AddUserCourseAsync(request);
 
-                return Ok(addedUserCourse);
+                return (!addedUserCourse.User.Id.Equals(default(Guid).ToString())) ?
+                       Ok(addedUserCourse) :
+                       Problem("Der Kurs existiert für den Benutzer bereits.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error adding user: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error");
+                _logger.LogError($"Fehler beim Hinzufügen des Kurses für den Benutzer: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
+            }
+        }
+
+        [HttpPost(Name = nameof(UpdateUserCourse))]
+        public async Task<IActionResult> UpdateUserCourse([FromQuery] UserCourseParameter request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Parameter are invalid.");
+                }
+
+                var updatedUserCourse = await _userCourseService.UpdateUserCourseAsync(request);
+
+                return (!updatedUserCourse.User.Id.Equals(default(Guid).ToString())) ?
+                       Ok(updatedUserCourse) :
+                       Problem("Der Kurs konnte für den Benutzer nicht geupdated werden.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Fehler beim Updaten des Kurses für den Benutzer: {ex.Message}");
+                return StatusCode(500, "Ein interner Fehler ist aufgetreten.");
             }
         }
     }

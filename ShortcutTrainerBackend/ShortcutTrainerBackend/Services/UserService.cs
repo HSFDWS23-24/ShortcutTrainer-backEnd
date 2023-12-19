@@ -1,4 +1,6 @@
-﻿using ShortcutTrainerBackend.Data.Models;
+﻿using DevExpress.Xpo;
+using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Data.TransferObjects;
 using ShortcutTrainerBackend.Services.Interfaces;
 using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
@@ -6,89 +8,112 @@ namespace ShortcutTrainerBackend.Services
 {
     public class UserService : IUserService
     {
-        private readonly IMockDatabase<User> _mockDatabase;
-        public UserService(IMockDatabase<User> mockDatabase)
+        public UserService(Session session)
         {
-            _mockDatabase = mockDatabase;
+            _session = session;
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync()
-        {
-            var userList = _mockDatabase.DataStore;
+        private readonly Session _session;
 
-            if (userList != null)
-            {
-                return await Task.FromResult(_mockDatabase.DataStore);
-            }
-            return await Task.FromResult(Enumerable.Empty<User>());
+        public IEnumerable<DtoUser> GetUsers()
+        {
+            var users = new XPCollection<User>(_session)
+                .Select(q => new DtoUser
+                {
+                    Id = q.Id,
+                    Email = q.Email,
+                    Name = q.Name,
+                    PreferredKeyboardLayout = q.PreferredKeyboardLayout,
+                    PreferredLanguage = q.PreferredLanguage,
+                    PreferredOperatingSystem = q.PreferredOperatingSystem
+                });
+
+            return users;
+        }
+        public DtoUser GetUser(string userId)
+        {
+            var users = new XPCollection<User>(_session)
+                .Where(q => q.Id == userId)
+                .Select(q => new DtoUser
+                {
+                    Id = q.Id,
+                    Email = q.Email,
+                    Name = q.Name,
+                    PreferredKeyboardLayout = q.PreferredKeyboardLayout,
+                    PreferredLanguage = q.PreferredLanguage,
+                    PreferredOperatingSystem = q.PreferredOperatingSystem
+                });
+
+            if (users.Any())
+                return users.FirstOrDefault(q => q.Id == userId);
+            else
+                return new DtoUser()
+                {
+                    Id = default(Guid).ToString(),
+                    Name = string.Empty,
+                    Email = string.Empty
+                };
+        }
+        public DtoUser AddUser(User user)
+        {
+            var users = new XPCollection<User>(_session);
+            users.Add(user);
+
+            return GetUser(user.Id);
+        }
+        public DtoUser UpdateUser(User user)
+        {
+            var users = new XPCollection<User>(_session);
+
+            var oldUser = users.FirstOrDefault(u => u.Id.Equals(user.Id));
+            users.Remove(oldUser);
+
+            users.Add(user);
+
+            return GetUser(user.Id);
         }
 
-        public async Task<User> GetUserAsync(UserParameter request)
+        public async Task<IEnumerable<DtoUser>> GetUsersAsync()
         {
-            var user = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.UserID);
-
-            if (user != null)
-            {
-                //var userList = new List<User>();
-                //userList.Add(user);
-
-                return await Task.FromResult(user);
-            }
-            return await Task.FromResult(new User());
+            return await Task.FromResult(GetUsers());
         }
 
-        public async Task<User> AddUserAsync(User newUser)
+        public async Task<DtoUser> GetUserAsync(UserParameter request)
         {
-            if (newUser == null)
-            {
-                throw new ArgumentNullException(nameof(newUser));
-            }
-
-            // Check if the user already exists
-            var existingUser = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == newUser.Id);
-
-            if (existingUser != null)
-            {
-                //Check if the user should be updated, if already exists
-                throw new InvalidOperationException("User with the same ID already exists");
-            }
-
-            // Add the new user to the database
-            _mockDatabase.DataStore.Add(newUser);
-
-            // Simulate asynchronous operation with Task.Delay
-            await Task.Delay(1);
-
-            return newUser;
+            return await Task.FromResult(GetUser(request.UserID));
         }
 
-        public async Task<User> UpdateUserAsync(User updatedUser)
+        public async Task<DtoUser> AddUserAsync(User user)
         {
-            if (updatedUser == null)
+            var oldUser = GetUser(user.Id);
+
+            if(!oldUser.Id.Equals(default(Guid).ToString()))
             {
-                throw new ArgumentNullException(nameof(updatedUser));
+                return await Task.FromResult(new DtoUser() { 
+                    Id = default(Guid).ToString(),
+                    Name = string.Empty,
+                    Email = string.Empty
+                });
             }
 
-            // Find the user in the database
-            var existingUser = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == updatedUser.Id);
+            return await Task.FromResult(AddUser(user));
+        }
 
-            if (existingUser == null)
+        public async Task<DtoUser> UpdateUserAsync(User user)
+        {
+            var oldUser = GetUser(user.Id);
+
+            if (!oldUser.Id.Equals(user.Id))
             {
-                throw new InvalidOperationException("User does not exist");
+                return await Task.FromResult(new DtoUser()
+                {
+                    Id = default(Guid).ToString(),
+                    Name = string.Empty,
+                    Email = string.Empty
+                });
             }
 
-            // Update the user properties in the DataStore
-            existingUser.Name = updatedUser.Name;
-            existingUser.Email = updatedUser.Email;
-            existingUser.PreferredLanguage = updatedUser.PreferredLanguage;
-            existingUser.PreferredKeyboardLayout = updatedUser.PreferredKeyboardLayout;
-            existingUser.PreferredOperatingSystem = updatedUser.PreferredOperatingSystem;
-            // Add other properties as needed
-
-            // Simulate asynchronous operation with Task.Delay
-            await Task.Delay(1);
-
-            return existingUser;
+            return await Task.FromResult(UpdateUser(user));
         }
     }
 }

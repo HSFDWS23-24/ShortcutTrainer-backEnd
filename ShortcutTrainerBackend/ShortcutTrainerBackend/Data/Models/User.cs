@@ -2,19 +2,38 @@ using DevExpress.Xpo;
 
 namespace ShortcutTrainerBackend.Data.Models;
 
-public class User
+[Persistent("_user")]
+public class User : XPLiteObject
 {
-    public string Id { get; set; }
+    public User(Session session) : base(session) { }
 
-    public string Name { get; set; }
+    [Persistent("id"), Key(AutoGenerate = false), Size(36)]
+    public string Id
+    {
+        get => fId;
+        set => SetPropertyValue(nameof(Id), ref fId, value);
+    }
+    private string fId;
 
-    public string Email { get; set; }
+    [Persistent("name"), Size(128)]
+    public string Name
+    {
+        get => fName;
+        set => SetPropertyValue(nameof(Name), ref fName, value);
+    }
+    private string fName;
 
-    public string PreferredLanguage { get; set; }
+    [Persistent("email"), Size(320)]
+    public string Email
+    {
+        get => fEmail;
+        set => SetPropertyValue(nameof(Email), ref fEmail, value);
+    }
+    private string fEmail;
 
-    public string PreferredKeyboardLayout { get; set; }
-
-    public string PreferredOperatingSystem { get; set; }
-
-    public List<UserCourse> UserCourses { get; set; }
+    [Association("User-UserCourse")]
+    public XPCollection<UserCourse> UserCourses => GetCollection<UserCourse>();
+    
+    [Association("User-UserAnswer")]
+    public XPCollection<UserAnswer> UserAnswers => GetCollection<UserAnswer>();
 }

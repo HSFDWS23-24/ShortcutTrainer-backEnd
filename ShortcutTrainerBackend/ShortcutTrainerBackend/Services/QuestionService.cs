@@ -1,27 +1,62 @@
-﻿using ShortcutTrainerBackend.Data.Models;
+using DevExpress.Xpo;
+using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Data.TransferObjects;
 using ShortcutTrainerBackend.Services.Interfaces;
-using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 namespace ShortcutTrainerBackend.Services
 {
     public class QuestionService : IQuestionService
     {
-        private readonly IMockDatabase<Course> _mockDatabase;
-        public QuestionService(IMockDatabase<Course> mockDatabase)
+        public QuestionService(Session session)
         {
-            _mockDatabase = mockDatabase;
+            _session = session;
         }
 
-        public async Task<IEnumerable<Question>> GetQuestionsAsync(QuestionParameter request)
-        {
-            var course = _mockDatabase.DataStore.FirstOrDefault(c => c.Id == request.CourseID);
+        private readonly Session _session;
 
-            if (course != null)
-            {
-                // return await Task.FromResult(course.Questions.AsEnumerable());
-                return await Task.FromResult(new List<Question>());
-            }
-            return await Task.FromResult(Enumerable.Empty<Question>());
+        public IEnumerable<DtoQuestion> GetQuestions(int courseId, string language, string system)
+        {
+            var questions = new XPCollection<Question>(_session)
+                .Where(q => q.Course.Id == courseId && q.Course.Language == language)
+                .Select(q => new DtoQuestion
+                {
+                    Id = q.Id,
+                    Content = q.Content,
+                    Answers = q.Answers
+                        .Where(a => a.System == system)
+                        .Select(a => new DtoAnswer
+                        {
+                            Id = a.Id,
+                            System = a.System,
+                            Shortcut = a.Shortcut
+                        })
+                });
+            return questions;
+        }
+        
+        public async Task<IEnumerable<DtoQuestion>> GetQuestionsAsync(int courseId, string language, string system)
+        {
+            return await Task.FromResult(GetQuestions(courseId, language, system));
+        }
+
+        public async Task<IEnumerable<DtoQuestion>> GetUnansweredQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<DtoQuestion>> GetIncorrectQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<DtoQuestion>> GetCorrectQuestionsAsync(QuestionParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateQuestionStatusAsync(int questionId, string questionStatus)
+        {
+            throw new NotImplementedException();
         }
     }
 }

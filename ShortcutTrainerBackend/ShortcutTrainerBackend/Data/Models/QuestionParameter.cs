@@ -2,9 +2,8 @@
 {
     public class QuestionParameter
     {        
-        public required int CourseID { get; set; }
-        public required string Language { get; set; }
-        public required string OperatingSystem { get; set; }
-        public required string KeyboadLayout { get; set; }
+        public int? CourseID { get; set; }
+        public string? Language { get; set; }
+        public string? OperatingSystem { get; set; }
     }
 }

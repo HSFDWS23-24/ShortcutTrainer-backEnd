@@ -1,10 +1,7 @@
 using DevExpress.Xpo;
-using DevExpress.Xpo.DB;
-using ShortcutTrainerBackend.Data.Models;
+using ShortcutTrainerBackend.Database;
 using ShortcutTrainerBackend.Services;
 using ShortcutTrainerBackend.Services.Interfaces;
-using ShortcutTrainerBackend.Testing.Mocks.Data;
-using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 // ToDo: This configuration initializes and sets up the ASP.NET Core application. The DI container is populated with
 // various services and mock databases for questions and courses to make them available for different areas within the
@@ -12,21 +9,17 @@ using ShortcutTrainerBackend.Testing.Mocks.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ToDo: Connect to database
-// ToDo: registration of required mock databases; can now be used for DI in services
-builder.Services.AddSingleton<IMockDatabase<Joke>, MockJokeDatabase>();
-builder.Services.AddSingleton<IMockDatabase<Question>, MockQuestionDatabase>();
-builder.Services.AddSingleton<IMockDatabase<Course>, MockCourseDatabase>();
-builder.Services.AddSingleton<IMockDatabase<User>, MockUserDatabase>();
-builder.Services.AddSingleton<IMockDatabase<UserCourse>, MockUserCourseDatabase>();
+// ToDo: Improve database handling
+DatabaseHelper.CreateDatabaseConnection();
+// ToDo: uncomment if you want to delete all data from mock db and demonstrate data creation via DevExpress.Xpo
+//DatabaseHelper.ShowDemo();
+// ToDo: eigene Service-Registrierung implementieren
+// Add required parameters for service DI
+builder.Services.AddSingleton<Session>();
 
 // Add services to the container.
-builder.Services.AddScoped<IJokeService, JokeService>();
-builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserCourseService, UserCourseService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

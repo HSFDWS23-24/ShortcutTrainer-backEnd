@@ -33,12 +33,12 @@ Displays all courses
 /Course
 ```
 
-### Request body example
+### Request body example 
 ```
 {
    "UserID": 1,
-   "Tag":"<string>",
    "Language":"en",
+   "Tag":"<string>",
    "SubscriptionType":"0",
    "SearchString":"<string>",
    "Limit":"<string>"
@@ -46,7 +46,8 @@ Displays all courses
 ```
 
 
-### Responses body example
+### Responses body example 
+Wenn eine UserID angegeben wird folgende Response:
 ```
 [
   {
@@ -55,7 +56,7 @@ Displays all courses
     "language": "en",
     "description": "Beschreibung des Beispielkurses 1",
     "imageUrl": "url_zum_bild_1",
-    "subscription": 0,
+    "subscription": "",
     "tags": [
       {
         "tag": "Tag1"
@@ -71,22 +72,44 @@ Displays all courses
   }
 ]
 ```
+Wenn keine UserID angegeben wird kommen die Frei Verfügbaren Kurse zurück
+```
+[
+  {
+    "id": 1,
+    "title": "Beispielkurs 1",
+    "language": "en",
+    "description": "Beschreibung des Beispielkurses 1",
+    "imageUrl": "url_zum_bild_1",
+    "subscription": "",
+    "tags": [
+      {
+        "tag": "Tag1"
+      },
+      {
+        "tag": "Tag2"
+      }
+    ],
+    "amountQuestions": 3
+  }
+]
+```
 ---
 ### Parameter definition
 | IN/OUT | Variable        | Type   | Example                           | Description |
 | ------ | --------------- | ------ | --------------------------------- | ----------- |
-| IN     | UserID          | int32  | 1                                 | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
-| IN     | Tag             | string | Tag1                              |
-| IN     | Language        | string | en,de,fr                          | Default ohne angabe "de"
-| IN     | SubscriptionType| int32  | 0(free), 1(other)                 | Default ohne angabe 0
-| IN     | SearchString    | string | Beispielkurs 2                    |
-| IN     | Limit           | int32  | 5                                 |
+| IN     | UserID          | int32?  | 1                                | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
+| IN     | Tag             | string? | Tag1                             |
+| IN     | Language        | required string | en,de,fr                 | 
+| IN     | string          | string?  | free                            | Default ohne angabe 0
+| IN     | SearchString    | string? | Beispielkurs 2                   |
+| IN     | Limit           | int32?  | 5                                |
 | OUT    | id              | int32  | 1                                 |
 | OUT    | title           | string | Beispielkurs 1                    |
 | OUT    | language        | string | en                                |
 | OUT    | description     | string | Beschreibung des Beispielkurses 1 |
 | OUT    | imageUrl        | string | url_zum_bild_1                    |
-| OUT    | subscription    | int32  | 0(free)                           |
+| OUT    | subscription    | string | free                              |
 | OUT    | tags            | array  | "Tag1", "Tag2"                    |
 | OUT    | isFavorite      | bool   | true                              |
 | OUT    | answeredCorrect | int32  | 2                                 |

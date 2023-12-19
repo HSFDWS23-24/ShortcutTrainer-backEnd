@@ -1,4 +1,5 @@
 using DevExpress.Xpo;
+using ShortcutTrainerBackend.Data.TransferObjects;
 
 namespace ShortcutTrainerBackend.Data.Models;
 

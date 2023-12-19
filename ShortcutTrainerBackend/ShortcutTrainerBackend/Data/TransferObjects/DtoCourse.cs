@@ -10,5 +10,10 @@ public class DtoCourse
     public required string Subscription { get; set; }
     public bool? IsFavorite { get; set; } 
     public required IEnumerable<DtoCourseTag> Tags { get; set; }
-    public IEnumerable<DtoQuestion>? Questions { get; set; } //ToDo: ggf. Lazy Load
+    public int? AnsweredCorrect { get; set; }
+    public int? AnsweredInCorrect { get; set; }
+    public required int AmountQuestions { get; set; }
+
+
+
 }

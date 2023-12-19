@@ -27,5 +27,5 @@ public class Question : XPLiteObject
     private string fContent;
 
     [Association("Question-Answer")]
-    public XPCollection<Answer> Answers => GetCollection<Answer>();
+    public XPCollection<Answer> Answers => new XPCollection<Answer>();
 }

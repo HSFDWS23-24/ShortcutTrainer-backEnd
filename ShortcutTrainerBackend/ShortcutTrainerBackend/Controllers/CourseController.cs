@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 
 namespace ShortcutTrainerBackend.Controllers
@@ -19,9 +18,9 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet(Name = nameof(GetCourses))]
-        public async Task<IActionResult> GetCourses([FromQuery] CourseParameter request)
+        public async Task<IActionResult> GetCourses(string? userId, string language, string? system, string? searchString, int? limit)
         {
-            return Ok(await _coursesService.GetCoursesAsync(request));
+            return Ok(await _coursesService.GetCoursesAsync(userId, language, system, searchString, limit));
         }
 
     }

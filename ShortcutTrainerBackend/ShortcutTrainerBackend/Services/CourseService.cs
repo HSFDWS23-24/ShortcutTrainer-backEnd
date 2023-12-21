@@ -15,12 +15,12 @@ namespace ShortcutTrainerBackend.Services
 
         private readonly Session _session;
         private readonly IQuestionService _questionService;
-        
-        
-        private async Task<IEnumerable<DtoCourse>> GetFreeCoursesAsync(string language, string? system, int? limit = null)
+
+
+        private async Task<IEnumerable<DtoCourse>> GetFreeCoursesAsync(string language, string? tag, string? searchString, int? limit = null)
         {
             var courses = new XPCollection<Course>(_session)
-                .Where(c => c.Subscription == "free" && c.Language == language)
+                .Where(c => c.Subscription == "free" && c.Language == language && (string.IsNullOrEmpty(searchString) || c.Title.Contains(searchString) || c.Description.Contains(searchString)))
                 .Take(limit ?? 100)
                 .Select(c => new DtoCourse
                 {
@@ -30,19 +30,19 @@ namespace ShortcutTrainerBackend.Services
                     Description = c.Description,
                     ImageUrl = c.ImageUrl,
                     Subscription = c.Subscription,
-                    Tags = c.Tags.Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
-                    Questions = system == null ? null : _questionService.GetQuestions(c.Id, language, system)
+                    Tags = c.Tags.Where(ct => tag == null || ct.Key.Tag == tag).Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
+                    AmountQuestions = c.Questions.Count
                 });
+
             return await Task.FromResult(courses);
         }
-        
-        // ToDo: bitte in API-Doku übernehmen (aber in bschöner): Freie Kurse werden zurückgegeben, sofern keine UserId angegeben wird | Wird ein System angegeben, werden Fragen mit geladen
-        public async Task<IEnumerable<DtoCourse>> GetCoursesAsync(string? userId, string language, string? system, string? searchString, int? limit)
+
+        public async Task<IEnumerable<DtoCourse>> GetCoursesAsync(string? userId, string language, string? tag, string? searchString, int? limit)
         {
             var courses = userId == null
-                ? await GetFreeCoursesAsync(language, system, limit)
+                ? await GetFreeCoursesAsync(language, tag, searchString, limit)
                 : new XPCollection<UserCourse>(_session)
-                    .Where(uc => uc.Key.User.Id == userId)
+                    .Where(uc => uc.Key.User.Id == userId && uc.Key.Course.Language == language && (string.IsNullOrEmpty(searchString) || uc.Key.Course.Title.Contains(searchString) || uc.Key.Course.Description.Contains(searchString)))
                     .Take(limit ?? 100)
                     .Select(uc => new DtoCourse
                     {
@@ -53,10 +53,24 @@ namespace ShortcutTrainerBackend.Services
                         ImageUrl = uc.Key.Course.ImageUrl,
                         Subscription = uc.Key.Course.Subscription,
                         IsFavorite = uc.Favorite,
-                        Tags = uc.Key.Course.Tags.Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
-                        Questions = system == null ? null : _questionService.GetQuestions(uc.Key.Course.Id, language, system)
+                        Tags = uc.Key.Course.Tags.Where(ct => tag == null || ct.Key.Tag == tag).Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
+                        AnsweredCorrect = _session.Query<UserAnswer>().Where(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "correct").Count(),
+                        AnsweredInCorrect = _session.Query<UserAnswer>().Where(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "incorrect").Count(), 
+                        AmountQuestions = uc.Key.Course.Questions.Count, 
                     });
+
             return await Task.FromResult(courses);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

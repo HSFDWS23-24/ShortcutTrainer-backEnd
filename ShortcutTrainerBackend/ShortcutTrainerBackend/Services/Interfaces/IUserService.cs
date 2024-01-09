@@ -7,7 +7,7 @@ namespace ShortcutTrainerBackend.Services.Interfaces
     {
         Task<IEnumerable<DtoUser>> GetUsersAsync();
         Task<DtoUser> GetUserAsync(UserParameter request);
-        Task<DtoUser> AddUserAsync(User newUser);
-        Task<DtoUser> UpdateUserAsync(User updatedUser);
+        Task<DtoUser> AddUserAsync(UserParameter request);
+        Task<DtoUser> UpdateUserAsync(UserParameter request);
     }
 }

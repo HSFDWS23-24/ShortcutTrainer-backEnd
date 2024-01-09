@@ -15,27 +15,41 @@ namespace ShortcutTrainerBackend.Services
 
         private readonly Session _session;
 
-        public async Task<IEnumerable<DtoUser>> GetUsersAsync()
+        //public async Task<IEnumerable<DtoUser>> GetUsersAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public async Task<DtoUser> GetUserAsync(UserParameter request)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public async Task<DtoUser> AddUserAsync(UserParameter request)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public async Task<DtoUser> UpdateUserAsync(UserParameter request)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        private User UserParameterToUser(UserParameter parameter)
         {
-            throw new NotImplementedException();
+            User user = new User(_session)
+            {
+                Id = parameter.UserID,
+                Name = parameter.Name,
+                Email = parameter.Email,
+                PreferredKeyboardLayout = parameter.PreferredKeyboardLayout,
+                PreferredLanguage = parameter.PreferredLanguage,
+                PreferredOperatingSystem = parameter.PreferredOperatingSystem
+            };
+            return user;
         }
 
-        public async Task<DtoUser> GetUserAsync(UserParameter request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<DtoUser> AddUserAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<DtoUser> UpdateUserAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        /*public IEnumerable<DtoUser> GetUsers()
+        public IEnumerable<DtoUser> GetUsers()
         {
             var users = new XPCollection<User>(_session)
                 .Select(q => new DtoUser
@@ -103,27 +117,28 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(GetUser(request.UserID));
         }
 
-        public async Task<DtoUser> AddUserAsync(User user)
+        public async Task<DtoUser> AddUserAsync(UserParameter request)
         {
-            var oldUser = GetUser(user.Id);
+            var oldUser = GetUser(request.UserID);
 
-            if(!oldUser.Id.Equals(default(Guid).ToString()))
+            if (!oldUser.Id.Equals(default(Guid).ToString()))
             {
-                return await Task.FromResult(new DtoUser() { 
+                return await Task.FromResult(new DtoUser()
+                {
                     Id = default(Guid).ToString(),
                     Name = string.Empty,
                     Email = string.Empty
                 });
             }
-
+            var user = UserParameterToUser(request);
             return await Task.FromResult(AddUser(user));
         }
 
-        public async Task<DtoUser> UpdateUserAsync(User user)
+        public async Task<DtoUser> UpdateUserAsync(UserParameter request)
         {
-            var oldUser = GetUser(user.Id);
+            var oldUser = GetUser(request.UserID);
 
-            if (!oldUser.Id.Equals(user.Id))
+            if (!oldUser.Id.Equals(request.UserID))
             {
                 return await Task.FromResult(new DtoUser()
                 {
@@ -133,7 +148,8 @@ namespace ShortcutTrainerBackend.Services
                 });
             }
 
+            var user = UserParameterToUser(request);
             return await Task.FromResult(UpdateUser(user));
-        }*/
+        }
     }
 }

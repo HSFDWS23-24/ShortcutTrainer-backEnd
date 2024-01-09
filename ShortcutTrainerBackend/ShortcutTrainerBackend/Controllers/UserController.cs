@@ -47,19 +47,19 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost(Name = nameof(AddUser))]
-        public async Task<IActionResult> AddUser([FromQuery] User user)
+        public async Task<IActionResult> AddUser([FromQuery] UserParameter request)
         {
             try
             {
-                if (user == null)
+                if (request == null)
                 {
                     return BadRequest("User data is invalid.");
                 }
 
-                var addedUser = await _userService.AddUserAsync(user);
+                var addedUser = await _userService.AddUserAsync(request);
 
                 return (!addedUser.Id.Equals(default(Guid).ToString())) ?
-                       Ok(user) :
+                       Ok(request) :
                        Problem("Der Benutzer existiert bereits.");
             }
             catch (Exception ex)
@@ -70,19 +70,19 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost(Name = nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser([FromQuery] User user)
+        public async Task<IActionResult> UpdateUser([FromQuery] UserParameter request)
         {
            try
            {
-               if (user == null)
+               if (request == null)
                {
                    return BadRequest("User data is invalid.");
                }
 
-                var updateUser = await _userService.UpdateUserAsync(user);
+                var updateUser = await _userService.UpdateUserAsync(request);
 
                 return (!updateUser.Id.Equals(default(Guid).ToString())) ?
-                       Ok(user) :
+                       Ok(request) :
                        Problem("Der Benutzer existiert nicht.");
            }
            catch (Exception ex)

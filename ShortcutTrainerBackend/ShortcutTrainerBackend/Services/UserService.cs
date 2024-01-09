@@ -15,7 +15,27 @@ namespace ShortcutTrainerBackend.Services
 
         private readonly Session _session;
 
-        public IEnumerable<DtoUser> GetUsers()
+        public async Task<IEnumerable<DtoUser>> GetUsersAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<DtoUser> GetUserAsync(UserParameter request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<DtoUser> AddUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<DtoUser> UpdateUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public IEnumerable<DtoUser> GetUsers()
         {
             var users = new XPCollection<User>(_session)
                 .Select(q => new DtoUser
@@ -114,6 +134,6 @@ namespace ShortcutTrainerBackend.Services
             }
 
             return await Task.FromResult(UpdateUser(user));
-        }
+        }*/
     }
 }

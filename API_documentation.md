@@ -37,7 +37,7 @@ Displays all courses
 ```
 {
    "UserID": 1,
-   "Language":"en",
+   "Language":"en-EN",
    "Tag":"<string>",
    "SubscriptionType":"0",
    "SearchString":"<string>",
@@ -53,7 +53,7 @@ Wenn eine UserID angegeben wird folgende Response:
   {
     "id": 1,
     "title": "Beispielkurs 1",
-    "language": "en",
+    "language": "en-EN",
     "description": "Beschreibung des Beispielkurses 1",
     "imageUrl": "url_zum_bild_1",
     "subscription": "",
@@ -78,7 +78,7 @@ Wenn keine UserID angegeben wird kommen die Frei Verfügbaren Kurse zurück
   {
     "id": 1,
     "title": "Beispielkurs 1",
-    "language": "en",
+    "language": "en-EN",
     "description": "Beschreibung des Beispielkurses 1",
     "imageUrl": "url_zum_bild_1",
     "subscription": "",
@@ -100,7 +100,7 @@ Wenn keine UserID angegeben wird kommen die Frei Verfügbaren Kurse zurück
 | ------ | --------------- | ------ | --------------------------------- | ----------- |
 | IN     | UserID          | int32?  | 1                                | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
 | IN     | Tag             | string? | Tag1                             |
-| IN     | Language        | required string | en,de,fr                 | 
+| IN     | Language        | required string | en-EN,de-DE,fr-FR                 | 
 | IN     | string          | string?  | free                            | Default ohne angabe 0
 | IN     | SearchString    | string? | Beispielkurs 2                   |
 | IN     | Limit           | int32?  | 5                                |

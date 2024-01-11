@@ -11,9 +11,9 @@ create table _user (
     id char(36) primary key,
     name varchar(128) not null,
     email varchar(320) not null,
-    prefered_language varchar(128) not null default 'de-DE',
-    prefered_layout varchar(128) not null default 'QWERTZ',
-    prefered_operating_system varchar(128) not null default 'Windows 10'
+    preferred_language varchar(128) not null default 'de-DE',
+    preferred_keyboard_layout varchar(128) not null default 'QWERTZ',
+    preferred_operating_system varchar(128) not null default 'Windows 10'
 );
 
 create table course (

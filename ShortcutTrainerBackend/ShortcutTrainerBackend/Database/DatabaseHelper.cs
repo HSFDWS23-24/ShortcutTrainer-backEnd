@@ -81,14 +81,20 @@ public static class DatabaseHelper
         {
             Id = Guid.NewGuid().ToString(),
             Email = "user1@mail.com",
-            Name = "User1"
+            Name = "User1",
+            /*PreferredLanguage = "de-DE",
+            PreferredKeyboardLayout = "QWERTZ",
+            PreferredOperatingSystem = "Windows 10"*/
         };
         
         var user2 = new User(uow)
         {
             Id = Guid.NewGuid().ToString(),
             Email = "user2@mail.com",
-            Name = "User2"
+            Name = "User2",
+            // PreferredLanguage = "en-EN",
+            // PreferredKeyboardLayout = "QWERTY",
+            // PreferredOperatingSystem = "Linux"
         };
 
         var course = new Course(uow)

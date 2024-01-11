@@ -35,9 +35,10 @@ namespace ShortcutTrainerBackend.Controllers
             {
                 var user = await _userService.GetUserAsync(request);
 
-                return (!user.Id.Equals(default(Guid).ToString())) ?
-                       Ok(user) :
-                       NotFound("Es wurde kein Benutzer mit der ID gefunden.");
+                // return (!user.Id.Equals(default(Guid).ToString())) ?
+                //        Ok(user) :
+                //        NotFound("Es wurde kein Benutzer mit der ID gefunden.");
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -58,9 +59,13 @@ namespace ShortcutTrainerBackend.Controllers
 
                 var addedUser = await _userService.AddUserAsync(request);
 
-                return (!addedUser.Id.Equals(default(Guid).ToString())) ?
-                       Ok(request) :
-                       Problem("Der Benutzer existiert bereits.");
+                // return (!addedUser.Id.Equals(default(Guid).ToString())) ?
+                //        Ok(request) :
+                //        Problem("Der Benutzer existiert bereits.");
+                if(addedUser)
+                    return Ok(request);
+                else
+                    return Problem("Der Benutzer existiert bereits.");
             }
             catch (Exception ex)
             {
@@ -81,9 +86,13 @@ namespace ShortcutTrainerBackend.Controllers
 
                 var updateUser = await _userService.UpdateUserAsync(request);
 
-                return (!updateUser.Id.Equals(default(Guid).ToString())) ?
-                       Ok(request) :
-                       Problem("Der Benutzer existiert nicht.");
+                // return (!updateUser.Id.Equals(default(Guid).ToString())) ?
+                //        Ok(request) :
+                //        Problem("Der Benutzer existiert nicht.");
+                if(updateUser)
+                    return Ok(request);
+                else
+                    return Problem("Der Benutzer existiert nicht.");
            }
            catch (Exception ex)
             {

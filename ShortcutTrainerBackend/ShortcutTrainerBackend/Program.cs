@@ -9,8 +9,9 @@ using ShortcutTrainerBackend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ToDo: Improve database handling
-DatabaseHelper.CreateDatabaseConnection();
+if (!DatabaseHelper.TryCreateDatabaseConnection())
+    Environment.Exit(1);
+
 // ToDo: uncomment if you want to delete all data from mock db and demonstrate data creation via DevExpress.Xpo
 //DatabaseHelper.ShowDemo();
 // ToDo: eigene Service-Registrierung implementieren

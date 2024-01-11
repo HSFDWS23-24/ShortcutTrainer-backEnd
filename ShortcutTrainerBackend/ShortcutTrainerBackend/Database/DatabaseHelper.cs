@@ -7,25 +7,31 @@ namespace ShortcutTrainerBackend.Database;
 
 public static class DatabaseHelper
 {
-    public static void CreateDatabaseConnection()
+    public static bool TryCreateDatabaseConnection()
     {
-        var databaseConfig = GetDatabaseConfig();
+        const string environmentVariable = "POSTGRESQLCONNSTR_PostgresDB";
+        var connectionString = Environment.GetEnvironmentVariable(environmentVariable);
 
-        if (databaseConfig == null)
+        if (connectionString == null)
         {
-            Console.WriteLine("Unable to evaluate database config.");
-            return;
+            var databaseConfig = GetDatabaseConfig();
+            if (databaseConfig != null)
+            {
+                connectionString = PostgreSqlConnectionProvider.GetConnectionString(
+                    server: databaseConfig.Server,
+                    port: databaseConfig.Port,
+                    userId: databaseConfig.UserId,
+                    password: databaseConfig.Password,
+                    database: databaseConfig.Database
+                );   
+            }
         }
-        
-        var connectionString = PostgreSqlConnectionProvider.GetConnectionString(
-            server: databaseConfig.Server,
-            port: databaseConfig.Port,
-            userId: databaseConfig.UserId,
-            password: databaseConfig.Password,
-            database: databaseConfig.Database
-        );
-        
+
+        if (connectionString == null)
+            return false;
+
         XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOption.None);
+        return true;
     }
 
     private static DatabaseConfig? GetDatabaseConfig()

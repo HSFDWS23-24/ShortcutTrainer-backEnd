@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShortcutTrainerBackend.Data.Models;
 using ShortcutTrainerBackend.Services.Interfaces;
 
 namespace ShortcutTrainerBackend.Controllers
@@ -19,18 +18,18 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
-        public async Task<IActionResult> GetQuestions(int courseId, string language, string system)
+        public async Task<IActionResult> GetQuestions(string? userId, int courseId, string language, string system)
         {
-            var questions = await _questionService.GetQuestionsAsync(courseId, language, system);
+            var questions = await _questionService.GetQuestionsAsync(userId, courseId, language, system);
             return Ok(questions);
         }
 
         [HttpGet("unanswered")]
-        public async Task<IActionResult> GetUnansweredQuestions([FromQuery] QuestionParameter request)
+        public async Task<IActionResult> GetUnansweredQuestions(string? userId, int courseId, string language, string system)
         {
             try
             {
-                var unansweredQuestions = await _questionService.GetUnansweredQuestionsAsync(request);
+                var unansweredQuestions = await _questionService.GetUnansweredQuestionsAsync(userId, courseId, language, system);
 
                 return (unansweredQuestions.Any()) ?
                        Ok(unansweredQuestions) :
@@ -44,11 +43,11 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet("incorrect")]
-        public async Task<IActionResult> GetIncorrectQuestions([FromQuery] QuestionParameter request)
+        public async Task<IActionResult> GetIncorrectQuestions(string? userId, int courseId, string language, string system)
         {
             try
             {
-                var incorrectQuestions = await _questionService.GetIncorrectQuestionsAsync(request);
+                var incorrectQuestions = await _questionService.GetIncorrectQuestionsAsync(userId, courseId, language, system);
 
                 return (incorrectQuestions.Any()) ?
                        Ok(incorrectQuestions) :
@@ -63,11 +62,11 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpGet("correct")]
-        public async Task<IActionResult> GetCorrectQuestions([FromQuery] QuestionParameter request)
+        public async Task<IActionResult> GetCorrectQuestions(string? userId, int courseId, string language, string system)
         {
             try
             {
-                var correctQuestions = await _questionService.GetCorrectQuestionsAsync(request);
+                var correctQuestions = await _questionService.GetCorrectQuestionsAsync(userId, courseId, language, system);
 
                 return (correctQuestions.Any()) ?
                        Ok(correctQuestions) :
@@ -82,22 +81,27 @@ namespace ShortcutTrainerBackend.Controllers
         }
 
         [HttpPost("updateAnswer")]
-        public async Task<IActionResult> UpdateQuestionStatus(int questionId, string questionStatus)
+        public async Task<IActionResult> UpdateQuestionStatus(string? userId, int questionId, string questionStatus)
         {
-            if (questionId <= 0 || questionStatus != "correct" || questionStatus != "incorrect" || questionStatus != "unanswered")
+            if (questionId <= 0 || !IsValidQuestionStatus(questionStatus))
             {
                 return BadRequest("Invalid request data");
             }
 
-            try
+            var updateResult = await _questionService.UpdateQuestionStatusAsync(userId, questionId, questionStatus);
+            if (updateResult)
             {
-               await _questionService.UpdateQuestionStatusAsync(questionId, questionStatus);
-               return Ok(new { Message = "Fragestatus erfolgreich aktualisiert", UpdatedQuestionStatus = questionStatus });
+                return Ok(new { Message = "Fragestatus erfolgreich aktualisiert", UpdatedQuestionStatus = questionStatus });
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest("Fehler beim Aktualisieren des Fragestatus");
             }
+        }
+
+        private bool IsValidQuestionStatus(string questionStatus)
+        {
+            return questionStatus == "Correct" || questionStatus == "Incorrect" || questionStatus == "Unanswered";
         }
     }
 }

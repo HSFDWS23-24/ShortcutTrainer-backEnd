@@ -36,10 +36,9 @@ Displays all courses
 ### Request body example 
 ```
 {
-   "UserID": 1,
+   "UserID": XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX,
    "Language":"en-EN",
    "Tag":"<string>",
-   "SubscriptionType":"0",
    "SearchString":"<string>",
    "Limit":"<string>"
 }
@@ -98,10 +97,9 @@ Wenn keine UserID angegeben wird kommen die Frei Verfügbaren Kurse zurück
 ### Parameter definition
 | IN/OUT | Variable        | Type   | Example                           | Description |
 | ------ | --------------- | ------ | --------------------------------- | ----------- |
-| IN     | UserID          | int32?  | 1                                | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
+| IN     | UserID          | GUID  | XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX | Default ohne angabe kommen zur zeit alle frei verfügbaren Kurse zurück
 | IN     | Tag             | string? | Tag1                             |
-| IN     | Language        | required string | en-EN,de-DE,fr-FR                 | 
-| IN     | string          | string?  | free                            | Default ohne angabe 0
+| IN     | Language        | required string | en-EN,de-DE,fr-FR        | 
 | IN     | SearchString    | string? | Beispielkurs 2                   |
 | IN     | Limit           | int32?  | 5                                |
 | OUT    | id              | int32  | 1                                 |

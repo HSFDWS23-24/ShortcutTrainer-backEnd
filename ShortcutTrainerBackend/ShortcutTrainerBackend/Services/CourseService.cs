@@ -51,6 +51,8 @@ namespace ShortcutTrainerBackend.Services
                     Description = c.Description,
                     ImageUrl = c.ImageUrl,
                     Subscription = c.Subscription,
+                    AnsweredCorrect = 0,
+                    AnsweredIncorrect = 0,
                     Tags = c.Tags.Where(ct => tag == null || ct.Key.Tag == tag).Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
                     AmountQuestions = c.Questions.Count
                 });
@@ -75,8 +77,8 @@ namespace ShortcutTrainerBackend.Services
                         Subscription = uc.Key.Course.Subscription,
                         IsFavorite = uc.Favorite,
                         Tags = uc.Key.Course.Tags.Where(ct => tag == null || ct.Key.Tag == tag).Select(ct => new DtoCourseTag { Tag = ct.Key.Tag }),
-                        AnsweredCorrect = _session.Query<UserAnswer>().Where(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "correct").Count(),
-                        AnsweredIncorrect = _session.Query<UserAnswer>().Where(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "incorrect").Count(), 
+                        AnsweredCorrect = new XPCollection<UserAnswer>().Count(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "Correct"),
+                        AnsweredIncorrect = new XPCollection<UserAnswer>().Count(ua => ua.Key.User.Id == userId && ua.Key.Answer.Question.Course.Id == uc.Key.Course.Id && ua.QuestionStatus == "Incorrect"), 
                         AmountQuestions = uc.Key.Course.Questions.Count, 
                     });
 

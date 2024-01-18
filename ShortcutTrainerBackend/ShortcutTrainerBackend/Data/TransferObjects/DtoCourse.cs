@@ -10,8 +10,8 @@ public class DtoCourse
     public required string Subscription { get; set; }
     public bool? IsFavorite { get; set; } 
     public required IEnumerable<DtoCourseTag> Tags { get; set; }
-    public int? AnsweredCorrect { get; set; }
-    public int? AnsweredIncorrect { get; set; }
+    public required int AnsweredCorrect { get; set; }
+    public required int AnsweredIncorrect { get; set; }
     public required int AmountQuestions { get; set; }
 
 

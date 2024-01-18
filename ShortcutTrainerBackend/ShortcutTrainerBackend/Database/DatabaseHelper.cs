@@ -12,8 +12,29 @@ public static class DatabaseHelper
 {
     public static bool TryCreateDatabaseConnection()
     {
-        var connectionString =
-            "XpoProvider=Postgres;Server=db-shortcut-be-dev-gercentral-100.postgres.database.azure.com;User Id=shortcut_trainer_hsfd;Password=plsdontleak123@;Database=mock;Encoding=UNICODE;Port=5432";
+        string? connectionString = null;
+
+        try
+        {
+            connectionString = GetConnectionStringFromKeyVault();
+        }
+        catch (Exception)
+        {
+            var databaseConfig = GetDatabaseConfig();
+            if (databaseConfig != null)
+            {
+                connectionString = PostgreSqlConnectionProvider.GetConnectionString(
+                    server: databaseConfig.Server,
+                    port: databaseConfig.Port,
+                    userId: databaseConfig.UserId,
+                    password: databaseConfig.Password,
+                    database: databaseConfig.Database
+                );   
+            }
+        }
+
+        if (connectionString == null)
+            return false;
 
         XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOption.None);
         return true;

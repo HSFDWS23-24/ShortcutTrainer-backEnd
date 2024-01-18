@@ -160,6 +160,12 @@ public static class DatabaseHelper
             Content = "Test Question 2 content?"
         };
 
+        var question3 = new Question(uow)
+        {
+            Course = course,
+            Content = "Test Question 3 content?"
+        };
+
         var answer11 = new Answer(uow)
         {
             Question = question1,

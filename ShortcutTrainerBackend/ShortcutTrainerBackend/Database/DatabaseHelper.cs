@@ -1,3 +1,5 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
 using Newtonsoft.Json;
@@ -9,10 +11,13 @@ public static class DatabaseHelper
 {
     public static bool TryCreateDatabaseConnection()
     {
-        const string environmentVariable = "POSTGRESQLCONNSTR_PostgresDB";
-        var connectionString = Environment.GetEnvironmentVariable(environmentVariable);
+        string? connectionString = null;
 
-        if (connectionString == null)
+        try
+        {
+            connectionString = GetConnectionStringFromKeyVault();
+        }
+        catch (Exception)
         {
             var databaseConfig = GetDatabaseConfig();
             if (databaseConfig != null)
@@ -32,6 +37,17 @@ public static class DatabaseHelper
 
         XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOption.None);
         return true;
+    }
+
+    private static string? GetConnectionStringFromKeyVault()
+    {
+        var keyVaultUri = new Uri("https://postgresdbaccess.vault.azure.net/");
+        var client = new SecretClient(keyVaultUri, new DefaultAzureCredential());
+
+        var secretName = "postgresdbconnectionstring";
+        var secret = client.GetSecret(secretName);
+
+        return secret.Value.ToString();
     }
 
     private static DatabaseConfig? GetDatabaseConfig()

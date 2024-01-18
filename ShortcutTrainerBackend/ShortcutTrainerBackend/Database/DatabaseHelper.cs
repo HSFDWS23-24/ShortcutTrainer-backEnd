@@ -1,3 +1,4 @@
+using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using DevExpress.Xpo;
@@ -41,13 +42,21 @@ public static class DatabaseHelper
 
     private static string? GetConnectionStringFromKeyVault()
     {
-        var keyVaultUri = new Uri("https://postgresdbaccess.vault.azure.net/");
-        var client = new SecretClient(keyVaultUri, new DefaultAzureCredential());
+        var options = new SecretClientOptions()
+        {
+            Retry =
+            {
+                Delay= TimeSpan.FromSeconds(2),
+                MaxDelay = TimeSpan.FromSeconds(16),
+                MaxRetries = 5,
+                Mode = RetryMode.Exponential
+            }
+        };
+        var client = new SecretClient(new Uri("https://postgresdbaccess.vault.azure.net/"), new DefaultAzureCredential(),options);
 
-        var secretName = "postgresdbconnectionstring";
-        var secret = client.GetSecret(secretName);
+        KeyVaultSecret secret = client.GetSecret("postgresdbconnectionstring");
 
-        return secret.Value.ToString();
+        return secret.Value;
     }
 
     private static DatabaseConfig? GetDatabaseConfig()

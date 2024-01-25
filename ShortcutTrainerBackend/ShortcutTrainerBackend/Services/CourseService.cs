@@ -84,5 +84,32 @@ namespace ShortcutTrainerBackend.Services
 
             return await Task.FromResult(courses);
         }
+
+        public async Task<bool> UpdateFavouriteStatusAsync(int courseId, string userId, bool favouriteStatus)
+        {
+            using (var unitOfWork = new UnitOfWork(_session.DataLayer))
+            {
+                var userCourseKey = new UserCourseKey
+                {
+                    User = await Task.Run(() => unitOfWork.GetObjectByKey<User>(userId)),
+                    Course = await Task.Run(() => unitOfWork.GetObjectByKey<Course>(courseId))
+                };
+
+                var userCourse = await Task.Run(() => unitOfWork.GetObjectByKey<UserCourse>(userCourseKey));
+
+
+                // no userCourse is found
+                if (userCourse == null)
+                {
+                    return false;
+                }
+
+                userCourse.Favorite = favouriteStatus;
+
+                await Task.Run(() => unitOfWork.CommitChanges());
+
+                return true;
+            }
+        }
     }
 }

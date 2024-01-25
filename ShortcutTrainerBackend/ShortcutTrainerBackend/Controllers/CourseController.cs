@@ -23,5 +23,24 @@ namespace ShortcutTrainerBackend.Controllers
             return Ok(await _coursesService.GetCoursesAsync(userId, language, tag, searchString, limit));
         }
 
+        [HttpPost("updateFavourite")]
+        public async Task<IActionResult> UpdateFavouriteStatus(int courseId, string userId, bool favouriteStatus)
+        {
+            if (courseId <= 0)
+            {
+                return BadRequest("Invalid request data");
+            }
+
+            var updateResult = await _coursesService.UpdateFavouriteStatusAsync(courseId, userId, favouriteStatus);
+            if (updateResult)
+            {
+                return Ok(new { Message = "Favourite Attribut erfolgreich aktualisiert", UpdatedFavouriteStatus = favouriteStatus });
+            }
+            else
+            {
+                return BadRequest("Fehler beim Aktualisieren des Favourite Attributs");
+            }
+        }
+
     }
 }

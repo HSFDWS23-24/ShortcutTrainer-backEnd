@@ -13,7 +13,6 @@ public static class DatabaseHelper
     public static bool TryCreateDatabaseConnection()
     {
         string? connectionString = null;
-
         try
         {
             connectionString = GetConnectionStringFromKeyVault();

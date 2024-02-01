@@ -12,8 +12,29 @@ public static class DatabaseHelper
 {
     public static bool TryCreateDatabaseConnection()
     {
-        var connectionString =
-            "XpoProvider=Postgres;Server=db-shortcut-be-dev-gercentral-100.postgres.database.azure.com;User Id=shortcut_trainer_hsfd;Password=plsdontleak123@;Database=mock;Encoding=UNICODE;Port=5432";
+        string? connectionString = null;
+
+        try
+        {
+            connectionString = GetConnectionStringFromKeyVault();
+        }
+        catch (Exception)
+        {
+            var databaseConfig = GetDatabaseConfig();
+            if (databaseConfig != null)
+            {
+                connectionString = PostgreSqlConnectionProvider.GetConnectionString(
+                    server: databaseConfig.Server,
+                    port: databaseConfig.Port,
+                    userId: databaseConfig.UserId,
+                    password: databaseConfig.Password,
+                    database: databaseConfig.Database
+                );   
+            }
+        }
+
+        if (connectionString == null)
+            return false;
 
         XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOption.None);
         return true;
@@ -33,9 +54,10 @@ public static class DatabaseHelper
         };
         var client = new SecretClient(new Uri("https://postgresdbaccess.vault.azure.net/"), new DefaultAzureCredential(),options);
 
-        KeyVaultSecret secret = client.GetSecret("postgresdbconnectionstring");
+        var secretName = "postgresdbconnectionstring";
+        var secret = client.GetSecret(secretName);
 
-        return secret.Value;
+        return secret.Value.ToString();
     }
 
     private static DatabaseConfig? GetDatabaseConfig()
@@ -158,12 +180,6 @@ public static class DatabaseHelper
         {
             Course = course,
             Content = "Test Question 2 content?"
-        };
-
-        var question3 = new Question(uow)
-        {
-            Course = course,
-            Content = "Test Question 3 content?"
         };
 
         var answer11 = new Answer(uow)

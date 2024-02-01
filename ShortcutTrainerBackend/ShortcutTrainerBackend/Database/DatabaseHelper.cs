@@ -1,4 +1,3 @@
-using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using DevExpress.Xpo;
@@ -13,6 +12,7 @@ public static class DatabaseHelper
     public static bool TryCreateDatabaseConnection()
     {
         string? connectionString = null;
+
         try
         {
             connectionString = GetConnectionStringFromKeyVault();
@@ -53,9 +53,10 @@ public static class DatabaseHelper
         };
         var client = new SecretClient(new Uri("https://postgresdbaccess.vault.azure.net/"), new DefaultAzureCredential(),options);
 
-        KeyVaultSecret secret = client.GetSecret("postgresdbconnectionstring");
+        var secretName = "postgresdbconnectionstring";
+        var secret = client.GetSecret(secretName);
 
-        return secret.Value;
+        return secret.Value.ToString();
     }
 
     private static DatabaseConfig? GetDatabaseConfig()

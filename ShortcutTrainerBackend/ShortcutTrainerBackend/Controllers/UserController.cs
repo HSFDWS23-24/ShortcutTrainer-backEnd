@@ -35,9 +35,10 @@ namespace ShortcutTrainerBackend.Controllers
             {
                 var user = await _userService.GetUserAsync(request);
 
-                return (!user.Id.Equals(default(Guid).ToString())) ?
-                       Ok(user) :
-                       NotFound("Es wurde kein Benutzer mit der ID gefunden.");
+                // return (!user.Id.Equals(default(Guid).ToString())) ?
+                //        Ok(user) :
+                //        NotFound("Es wurde kein Benutzer mit der ID gefunden.");
+                return Ok(user);
             }
             catch (Exception ex)
             {

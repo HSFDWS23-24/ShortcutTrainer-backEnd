@@ -22,9 +22,9 @@ namespace ShortcutTrainerBackend.Services
                 Id = parameter.UserID,
                 Name = parameter.Name,
                 Email = parameter.Email,
-                PreferredKeyboardLayout = parameter.PreferredKeyboardLayout,
-                PreferredLanguage = parameter.PreferredLanguage,
-                PreferredOperatingSystem = parameter.PreferredOperatingSystem
+                // PreferredKeyboardLayout = parameter.PreferredKeyboardLayout,
+                // PreferredLanguage = parameter.PreferredLanguage,
+                // PreferredOperatingSystem = parameter.PreferredOperatingSystem
             };
             return user;
         }
@@ -37,9 +37,9 @@ namespace ShortcutTrainerBackend.Services
                     Id = q.Id,
                     Email = q.Email,
                     Name = q.Name,
-                    PreferredKeyboardLayout = q.PreferredKeyboardLayout,
-                    PreferredLanguage = q.PreferredLanguage,
-                    PreferredOperatingSystem = q.PreferredOperatingSystem
+                    // PreferredKeyboardLayout = q.PreferredKeyboardLayout,
+                    // PreferredLanguage = q.PreferredLanguage,
+                    // PreferredOperatingSystem = q.PreferredOperatingSystem
                 });
 
             return users;
@@ -54,9 +54,9 @@ namespace ShortcutTrainerBackend.Services
                     Id = q.Id,
                     Email = q.Email,
                     Name = q.Name,
-                    PreferredKeyboardLayout = q.PreferredKeyboardLayout,
-                    PreferredLanguage = q.PreferredLanguage,
-                    PreferredOperatingSystem = q.PreferredOperatingSystem
+                    // PreferredLanguage = q.PreferredLanguage,
+                    // PreferredKeyboardLayout = q.PreferredKeyboardLayout,
+                    // PreferredOperatingSystem = q.PreferredOperatingSystem
                 });
 
             if (users.Any())
@@ -66,7 +66,10 @@ namespace ShortcutTrainerBackend.Services
                 {
                     Id = default(Guid).ToString(),
                     Name = string.Empty,
-                    Email = string.Empty
+                    Email = string.Empty,
+                    // PreferredLanguage = string.Empty,
+                    // PreferredKeyboardLayout = string.Empty,
+                    // PreferredOperatingSystem = string.Empty
                 };
         }
         public DtoUser AddUser(User user)
@@ -108,7 +111,26 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(GetUser(request.UserID));
         }
 
-        public async Task<DtoUser> AddUserAsync(UserParameter request)
+        // public async Task<DtoUser> AddUserAsync(UserParameter request)
+        // {
+        //     // var oldUser = GetUser(request.UserID);
+
+        //     // if (!oldUser.Id.Equals(default(Guid).ToString()))
+        //     // {
+        //     //     return await Task.FromResult(new DtoUser()
+        //     //     {
+        //     //         Id = default(Guid).ToString(),
+        //     //         Name = string.Empty,
+        //     //         Email = string.Empty,
+        //     //         // PreferredLanguage = string.Empty,
+        //     //         // PreferredKeyboardLayout = string.Empty,
+        //     //         // PreferredOperatingSystem = string.Empty
+        //     //     });
+        //     // }
+        //     // var user = UserParameterToUser(request);
+        //     // return await Task.FromResult(AddUser(user));
+        // }
+        public async Task<bool> AddUserAsync(UserParameter request)
         {
             var oldUser = GetUser(request.UserID);
             var defaultGuid = default(Guid).ToString().Replace("{", "").Replace("}", "");
@@ -122,26 +144,51 @@ namespace ShortcutTrainerBackend.Services
                     Email = string.Empty
                 });
             }
-            var user = UserParameterToUser(request);
-            return await Task.FromResult(AddUser(user));
         }
+        // public async Task<DtoUser> UpdateUserAsync(UserParameter request)
+        // {
+        //     var oldUser = GetUser(request.UserID);
 
-        public async Task<DtoUser> UpdateUserAsync(UserParameter request)
+        //     if (!oldUser.Id.Equals(request.UserID))
+        //     {
+        //         return await Task.FromResult(new DtoUser()
+        //         {
+        //             Id = default(Guid).ToString(),
+        //             Name = string.Empty,
+        //             Email = string.Empty,
+        //             // PreferredLanguage = string.Empty,
+        //             // PreferredKeyboardLayout = string.Empty,
+        //             // PreferredOperatingSystem = string.Empty
+        //         });
+        //     }
+
+        //     var user = UserParameterToUser(request);
+        //     return await Task.FromResult(UpdateUser(user));
+        // }
+        public async Task<bool> UpdateUserAsync(UserParameter request)
         {
-            var oldUser = GetUser(request.UserID);
+            using(var unitOfWork = new UnitOfWork(_session.DataLayer))
+            {
+                var oldUser = await Task.Run(() => unitOfWork.GetObjectByKey<User>(request.UserID));
 
             if (!oldUser.Id.Equals(request.UserID.Replace("{", "").Replace("}", "")))
             {
                 return await Task.FromResult(new DtoUser()
                 {
-                    Id = default(Guid).ToString(),
-                    Name = string.Empty,
-                    Email = string.Empty
-                });
-            }
+                    return false;
+                }
+                
+                oldUser.Id = request.UserID;
+                oldUser.Email = request.Email;
+                oldUser.Name = request.Name;
+                // oldUser.PreferredLanguage = request.PreferredLanguage;
+                // oldUser.PreferredKeyboardLayout = request.PreferredKeyboardLayout;
+                // oldUser.PreferredOperatingSystem = request.PreferredOperatingSystem;
+                
+                await Task.Run(() => unitOfWork.CommitChanges());
 
-            var user = UserParameterToUser(request);
-            return await Task.FromResult(UpdateUser(user));
+                return true;
+            }
         }
     }
 }

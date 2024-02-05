@@ -9,6 +9,9 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
+      <Content Remove="Database\config.json" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Azure.Identity" Version="1.10.4" />
         <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.5.0" />
         <PackageReference Include="DevExpress.Xpo" Version="23.1.6" />

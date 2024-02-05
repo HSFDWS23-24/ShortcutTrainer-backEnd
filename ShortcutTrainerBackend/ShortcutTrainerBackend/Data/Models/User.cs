@@ -39,13 +39,13 @@ public class User : XPLiteObject
     }
     private string fPreferredLanguage;
 
-    // [Persistent("preferred_keyboard_layout"), Size(128)]
-    // public string PreferredKeyboardLayout
-    // {
-    //     get => fPreferredKeyboardLayout;
-    //     set => SetPropertyValue(nameof(PreferredKeyboardLayout), ref fPreferredKeyboardLayout, value);
-    // }
-    // private string fPreferredKeyboardLayout;
+    [Persistent("preferred_keyboard_layout"), Size(128)]
+    public string PreferredKeyboardLayout
+    {
+        get => fPreferredKeyboardLayout;
+        set => SetPropertyValue(nameof(PreferredKeyboardLayout), ref fPreferredKeyboardLayout, value);
+    }
+    private string fPreferredKeyboardLayout;
 
     [Persistent("preferred_operating_system"), Size(128)]
     public string PreferredOperatingSystem

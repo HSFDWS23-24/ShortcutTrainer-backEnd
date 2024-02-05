@@ -22,9 +22,9 @@ namespace ShortcutTrainerBackend.Services
                 Id = parameter.UserID,
                 Name = parameter.Name,
                 Email = parameter.Email,
-                // PreferredKeyboardLayout = parameter.PreferredKeyboardLayout,
-                // PreferredLanguage = parameter.PreferredLanguage,
-                // PreferredOperatingSystem = parameter.PreferredOperatingSystem
+                PreferredKeyboardLayout = parameter.PreferredKeyboardLayout,
+                PreferredLanguage = parameter.PreferredLanguage,
+                PreferredOperatingSystem = parameter.PreferredOperatingSystem
             };
             return user;
         }
@@ -37,9 +37,9 @@ namespace ShortcutTrainerBackend.Services
                     Id = q.Id,
                     Email = q.Email,
                     Name = q.Name,
-                    // PreferredKeyboardLayout = q.PreferredKeyboardLayout,
-                    // PreferredLanguage = q.PreferredLanguage,
-                    // PreferredOperatingSystem = q.PreferredOperatingSystem
+                    PreferredKeyboardLayout = q.PreferredKeyboardLayout,
+                    PreferredLanguage = q.PreferredLanguage,
+                    PreferredOperatingSystem = q.PreferredOperatingSystem
                 });
 
             return users;
@@ -108,26 +108,7 @@ namespace ShortcutTrainerBackend.Services
             return await Task.FromResult(GetUser(request.UserID));
         }
 
-        // public async Task<DtoUser> AddUserAsync(UserParameter request)
-        // {
-        //     // var oldUser = GetUser(request.UserID);
-
-        //     // if (!oldUser.Id.Equals(default(Guid).ToString()))
-        //     // {
-        //     //     return await Task.FromResult(new DtoUser()
-        //     //     {
-        //     //         Id = default(Guid).ToString(),
-        //     //         Name = string.Empty,
-        //     //         Email = string.Empty,
-        //     //         // PreferredLanguage = string.Empty,
-        //     //         // PreferredKeyboardLayout = string.Empty,
-        //     //         // PreferredOperatingSystem = string.Empty
-        //     //     });
-        //     // }
-        //     // var user = UserParameterToUser(request);
-        //     // return await Task.FromResult(AddUser(user));
-        // }
-        public async Task<bool> AddUserAsync(UserParameter request)
+        public async Task<DtoUser> AddUserAsync(UserParameter request)
         {
             var oldUser = GetUser(request.UserID);
             var defaultGuid = default(Guid).ToString().Replace("{", "").Replace("}", "");
@@ -138,26 +119,15 @@ namespace ShortcutTrainerBackend.Services
                 {
                     Id = default(Guid).ToString(),
                     Name = string.Empty,
-                    Email = string.Empty
+                    Email = string.Empty,
+                    PreferredLanguage = string.Empty,
+                    PreferredKeyboardLayout = string.Empty,
+                    PreferredOperatingSystem = string.Empty
                 });
             }
+            var user = UserParameterToUser(request);
+            return await Task.FromResult(AddUser(user));
         }
-        // public async Task<DtoUser> UpdateUserAsync(UserParameter request)
-        // {
-        //     var oldUser = GetUser(request.UserID);
-
-        //     if (!oldUser.Id.Equals(request.UserID))
-        //     {
-        //         return await Task.FromResult(new DtoUser()
-        //         {
-        //             Id = default(Guid).ToString(),
-        //             Name = string.Empty,
-        //             Email = string.Empty,
-        //             // PreferredLanguage = string.Empty,
-        //             // PreferredKeyboardLayout = string.Empty,
-        //             // PreferredOperatingSystem = string.Empty
-        //         });
-        //     }
 
         public async Task<DtoUser> UpdateUserAsync(UserParameter request)
         {
@@ -170,6 +140,9 @@ namespace ShortcutTrainerBackend.Services
                      Id = default(Guid).ToString(),
                      Name = string.Empty,
                      Email = string.Empty,
+                     PreferredLanguage = string.Empty,
+                     PreferredKeyboardLayout = string.Empty,
+                     PreferredOperatingSystem = string.Empty
                  });
              }
 

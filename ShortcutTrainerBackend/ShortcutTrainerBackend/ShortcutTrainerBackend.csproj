@@ -9,11 +9,14 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
     <ItemGroup>
+      <Content Remove="Database\config.json" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="DevExpress.Xpo" Version="23.1.6" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Npgsql" Version="8.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Testing\Mocks\Data\" />

@@ -57,8 +57,9 @@ namespace ShortcutTrainerBackend.Controllers
                 }
 
                 var addedUser = await _userService.AddUserAsync(request);
+                var defaultGuid = default(Guid).ToString().Replace("{", "").Replace("}", "");
 
-                return (!addedUser.Id.Equals(default(Guid).ToString())) ?
+                return (!addedUser.Id.Equals(defaultGuid)) ?
                        Ok(request) :
                        Problem("Der Benutzer existiert bereits.");
             }
@@ -80,8 +81,9 @@ namespace ShortcutTrainerBackend.Controllers
                }
 
                 var updateUser = await _userService.UpdateUserAsync(request);
+                var defaultGuid = default(Guid).ToString().Replace("{", "").Replace("}", "");
 
-                return (!updateUser.Id.Equals(default(Guid).ToString())) ?
+                return (!updateUser.Id.Equals(defaultGuid)) ?
                        Ok(request) :
                        Problem("Der Benutzer existiert nicht.");
            }

@@ -15,26 +15,6 @@ namespace ShortcutTrainerBackend.Services
 
         private readonly Session _session;
 
-        //public async Task<IEnumerable<DtoUser>> GetUsersAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<DtoUser> GetUserAsync(UserParameter request)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<DtoUser> AddUserAsync(UserParameter request)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<DtoUser> UpdateUserAsync(UserParameter request)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         private User UserParameterToUser(UserParameter parameter)
         {
             User user = new User(_session)
@@ -66,6 +46,7 @@ namespace ShortcutTrainerBackend.Services
         }
         public DtoUser GetUser(string userId)
         {
+            var users1 = new XPCollection<User>(_session);
             var users = new XPCollection<User>(_session)
                 .Where(q => q.Id == userId)
                 .Select(q => new DtoUser
@@ -91,8 +72,9 @@ namespace ShortcutTrainerBackend.Services
         public DtoUser AddUser(User user)
         {
             var users = new XPCollection<User>(_session);
-            users.Add(user);
-
+            //users.Add(user);
+            user.Save();
+            users.Reload();
             return GetUser(user.Id);
         }
         public DtoUser UpdateUser(User user)
@@ -100,9 +82,18 @@ namespace ShortcutTrainerBackend.Services
             var users = new XPCollection<User>(_session);
 
             var oldUser = users.FirstOrDefault(u => u.Id.Equals(user.Id));
-            users.Remove(oldUser);
+            //oldUser.Delete();
+            //users.Remove(oldUser);
 
-            users.Add(user);
+            //users.Add(user);
+            oldUser.Id = user.Id;
+            oldUser.Name = user.Name;
+            oldUser.Email = user.Email;
+            oldUser.PreferredKeyboardLayout = user.PreferredKeyboardLayout;
+            oldUser.PreferredLanguage = user.PreferredLanguage;
+            oldUser.PreferredOperatingSystem = user.PreferredOperatingSystem;
+            oldUser.Save();
+            users.Reload();
 
             return GetUser(user.Id);
         }
@@ -120,8 +111,9 @@ namespace ShortcutTrainerBackend.Services
         public async Task<DtoUser> AddUserAsync(UserParameter request)
         {
             var oldUser = GetUser(request.UserID);
+            var defaultGuid = default(Guid).ToString().Replace("{", "").Replace("}", "");
 
-            if (!oldUser.Id.Equals(default(Guid).ToString()))
+            if (!oldUser.Id.Equals(defaultGuid))
             {
                 return await Task.FromResult(new DtoUser()
                 {
@@ -138,7 +130,7 @@ namespace ShortcutTrainerBackend.Services
         {
             var oldUser = GetUser(request.UserID);
 
-            if (!oldUser.Id.Equals(request.UserID))
+            if (!oldUser.Id.Equals(request.UserID.Replace("{", "").Replace("}", "")))
             {
                 return await Task.FromResult(new DtoUser()
                 {
